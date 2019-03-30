@@ -69,8 +69,10 @@ int main(void)
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 
+/*
 	clock_t time;
 	time = clock();
+*/
 
 	#ifndef file
 	freopen("in.in", "r", stdin);
@@ -138,7 +140,7 @@ int main(void)
 				Item tmp = q.top();
 
 			//test
-				//printf("pop:(%d %d %d)\n", tmp.num, tmp.node, tmp.cost);
+				printf("pop:(%d %d %d)\n", tmp.num, tmp.node, tmp.cost);
 			//end test
 				q.pop();
 
@@ -209,6 +211,7 @@ int main(void)
 
 	//end 
 
+
 	//test
 		/*
 		for(int i = 0; i < tickets.size(); i++)
@@ -225,9 +228,11 @@ int main(void)
 		}
 		*/
 	}
-
+//count time
+/*
 	time = clock() - time;
 	cout << "time: " << (double)time/CLOCKS_PER_SEC << endl;
+*/
 
 	return 0;
 }
