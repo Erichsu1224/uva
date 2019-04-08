@@ -20,10 +20,12 @@ int main(void)
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 
+	/*
 	#ifndef file
 	freopen("in.in", "r", stdin);
 	freopen("out.out", "w", stdout);
 	#endif
+	*/
 	
 	int down = 1, up = 10;
 
