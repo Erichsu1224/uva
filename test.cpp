@@ -1,35 +1,32 @@
-#include <iostream>
+#include <sys/types.h>
 #include <cstdio>
-#include <vector>
-#include <queue>
-#include <string>
-#include <cstring>
-#include <cmath>
-#include <cstdlib>
-#include <algorithm>
+#include <iostream>
+#include <unistd.h>
 using namespace std;
-
-#define ll long long
-#define C cases
-#define PB push_back
-#define PP pair<int, int>
-
 
 int main(void)
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    
-    #ifndef file
-    freopen("in.in", "r", stdin);
-    freopen("out.out", "w", stdout);
-    #endif
+    pid_t pid;
 
-    int n, m;
+    pid = fork();
 
-    while(~scanf("%d %d", &n, &m))
+    cout << pid << endl;
+
+    if(pid < 0)
     {
-        int gcde = __gcd(2, 3);
+        fprintf(stderr, "Fork Failed");
+        return 1;
+    }
+
+    else if(pid == 0)
+    {
+        execlp("bin/ls", "ls", NULL);
+    }
+
+    else
+    {
+        wait(NULL);
+        printf("Child Complete\n");
     }
 
     return 0;
