@@ -7,6 +7,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <algorithm>
+#include <stack>
 using namespace std;
 
 #define ll long long
