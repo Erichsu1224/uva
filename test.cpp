@@ -1,31 +1,70 @@
-#include <iostream>     // std::cout
-#include <algorithm>    // std::unique, std::distance
-#include <vector>       // std::vector
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <queue>
+#include <string>
+#include <cstring>
+#include <cmath>
+#include <cstdlib>
+#include <algorithm>
 using namespace std;
 
-bool myfunction (int i, int j) {
-  return (i==j);
+#define ll long long
+#define C cases
+#define PB push_back
+#define PP pair<int, int>
+#define maxn 25+5
+
+int ans;
+int adj[maxn][maxn];
+int n, edge;
+
+void dfs(int node, int dist)
+{
+    if(ans < dist)
+        ans = dist;
+    for(int i = 0; i < n; i++)
+    {
+        if(adj[node][i])
+        {
+            adj[node][i] = adj[i][node] = 0;
+            dfs(i, dist+1);
+            adj[node][i] = adj[i][node] = 1;
+        }
+    }
 }
 
-int main () {
-  int myints[] = {10,20,20,20,30,30,20,20,10};           // 10 20 20 20 30 30 20 20 10
-  std::vector<int> myvector (myints,myints+9);
 
-  // using default comparison:
-  std::vector<int>::iterator it;
-  it = std::unique (myvector.begin(), myvector.end());   // 10 20 30 20 10 ?  ?  ?  ?
-                                                         //                ^
-  cout << it-myvector.begin() << endl;
-  myvector.resize( std::distance(myvector.begin(),it) ); // 10 20 30 20 10
+int main(void)
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
 
-  // using predicate comparison:
-  std::unique (myvector.begin(), myvector.end(), myfunction);   // (no changes)
+    #ifndef file
+    freopen("in.in", "r", stdin);
+    freopen("out.out", "w", stdout);
+    #endif
 
-  // print out content:
-  std::cout << "myvector contains:";
-  for (it=myvector.begin(); it!=myvector.end(); ++it)
-    std::cout << ' ' << *it;
-  std::cout << '\n';
+    while(~scanf("%d %d", &n, &edge) && (n!=0 || edge!=0))
+    {
+        memset(adj, 0, sizeof(adj));
+        ans = 0;
 
-  return 0;
+        for(int i = 0; i < edge; i++)
+        {
+            int from, to;
+            scanf("%d %d", &from, &to);
+
+            adj[from][to] = 1;
+            adj[to][from] = 1;
+        }
+
+        for(int i = 0; i < n; i++)
+        {
+            dfs(i, 0);
+        }
+
+        printf("%d\n", ans);
+    }
+    return 0;
 }
