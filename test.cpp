@@ -1,33 +1,31 @@
-#include <sys/types.h>
-#include <cstdio>
-#include <iostream>
-#include <unistd.h>
+#include <iostream>     // std::cout
+#include <algorithm>    // std::unique, std::distance
+#include <vector>       // std::vector
 using namespace std;
 
-int main(void)
-{
-    pid_t pid;
+bool myfunction (int i, int j) {
+  return (i==j);
+}
 
-    pid = fork();
+int main () {
+  int myints[] = {10,20,20,20,30,30,20,20,10};           // 10 20 20 20 30 30 20 20 10
+  std::vector<int> myvector (myints,myints+9);
 
-    cout << pid << endl;
+  // using default comparison:
+  std::vector<int>::iterator it;
+  it = std::unique (myvector.begin(), myvector.end());   // 10 20 30 20 10 ?  ?  ?  ?
+                                                         //                ^
+  cout << it-myvector.begin() << endl;
+  myvector.resize( std::distance(myvector.begin(),it) ); // 10 20 30 20 10
 
-    if(pid < 0)
-    {
-        fprintf(stderr, "Fork Failed");
-        return 1;
-    }
+  // using predicate comparison:
+  std::unique (myvector.begin(), myvector.end(), myfunction);   // (no changes)
 
-    else if(pid == 0)
-    {
-        execlp("bin/ls", "ls", NULL);
-    }
+  // print out content:
+  std::cout << "myvector contains:";
+  for (it=myvector.begin(); it!=myvector.end(); ++it)
+    std::cout << ' ' << *it;
+  std::cout << '\n';
 
-    else
-    {
-        wait(NULL);
-        printf("Child Complete\n");
-    }
-
-    return 0;
+  return 0;
 }
