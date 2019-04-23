@@ -45,6 +45,7 @@ int main(void)
 		vector<point> star;
 		int y[maxn];
 		int m;
+		int left[maxn], on[maxn], on2[maxn];
 
 		for(int i = 0; i < n; i++)
 		{
@@ -59,7 +60,40 @@ int main(void)
 
 		m = unique(y, y+n)-y;
 
-		cout << m << endl;
+		if(m <= 2)
+		{
+			cout << n << endl;
+			continue;
+		}
+
+		for(int i = 0; i < n-1; i++)
+		{
+			for(int l = i+1; l < n; l++)
+			{
+				int ymin = y[i], ymax = y[l];
+				int p = 0;
+
+				for(int k = 0; k < m; k++)
+				{
+					if(k == 0 || star[k].x != star[k-1].x)
+					{
+						p++;
+						on[p] = on2[p] = 0;
+						left[p] = p == 0 ? left[p-1]+on2[p-1]-on[p-1];
+					}
+
+					if(star[k].y > ymin && star[k].y < ymax)	on[p]++;
+					if(star[k].y >= ymin && star[k].y <= ymax) on2[p]++;
+				}
+				if(p <= 2)	return p;
+				int M = 0;
+				for(int j = 0; j <= p; j++)
+				{
+					ans = max(ans, left[j]+on2[j]+M);
+					M = max(M, on[j]-left[j]);
+				}
+			}
+		}
 
 
 	}
