@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
+#include <stack>
 #include <algorithm>
 using namespace std;
 
@@ -42,8 +43,8 @@ int main(void)
     int n;
     scanf("%d", &n);
 
-
-    for(int i = 1; i <= n; i++)
+    //O(N)
+    for(int i = 1; i <= n; i++) 
     {
         int child;
         scanf("%d", &child);
@@ -58,12 +59,14 @@ int main(void)
 
     int root;
 
+    //O(logN)
     for(int i = 1; tree[i].parent != -1; i = tree[i].parent)
     {
         root = i;
     }
     root = tree[root].parent;
-    
+
+    //O(NlogN)
     tree[root].height = dfs(root);
 
     printf("%d\n%d\n", root, total);
