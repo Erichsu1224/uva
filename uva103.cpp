@@ -15,19 +15,26 @@ using namespace std;
 #define PP pair<int, int>
 #define maxn 1000000
 
-int n, m;
-vector<int> v[maxn];
-
-bool cmp(vector<int> a, vector<int> b)
+struct Item
 {
-	return a.back() < b.back();
+	int num;
+	vector<int> ve;
+};
+int n, m;
+Item v[maxn];
+
+bool cmp(Item a, Item b)
+{
+	if(a.ve.back() == b.ve.back())
+		return a.ve[0] < b.ve[0];
+	return a.ve.back() < b.ve.back();
 }
 
-bool check(int a, int b)
+bool check(int a, int b) //前大後小
 {
-	for(int i = 0; i < n; i++)
+	for(int i = 0; i < m; i++)
 	{
-		if(v[b][i]>v[a][i])
+		if(v[b].ve[i] > v[a].ve[i])
 			return false;
 	}
 	return true;
@@ -50,28 +57,32 @@ int main(void)
 
 		for(int i = 0; i < n; i++)
 		{
-			v[i].clear();
+			v[i].ve.clear();
+			v[i].num = i+1;
 
 			for(int k = 0; k < m; k++)
 			{
 				int tmp;
 				scanf("%d", &tmp);
-				v[i].PB(tmp);
+				v[i].ve.PB(tmp);
 			}
-			sort(v[i].begin(), v[i].end());
+			sort(v[i].ve.begin(), v[i].ve.end());
 		}
 
 		sort(v, v+n, cmp);
 
+
 		for(int i = 0; i < n; i++)
 		{
+			cout << v[i].num << ": ";
 			for(int k = 0; k < m; k++)
 			{
-				cout << v[i][k] << ' ';
+				cout << v[i].ve[k] << ' ';
 			}
 			cout << endl;
 		}
 		cout << endl;
+
 
 		int lis[maxn];
 		fill(lis, lis+n, -1);
@@ -80,40 +91,48 @@ int main(void)
 
 		lis[top] = 0;
 
-		for(int i = 1; i < n; i++)
-		{
-			int left = 0, right = top;
-			bool found = false;
 
-			for(int l = 0; l <= top; l++)
+			for(int i = 1; i < n; i++)
 			{
-				if(check(lis[l],i))
-				{
-					lis[l] = i;
-					found = true;
-					break;
-				}
-			}
+				int left = 0, right = top;
+				bool found = false;
 
-			if(!found)
-			{
-				if(check(i, lis[top]))
+				for(int l = 0; l <= top; l++)
 				{
-					top++;
-					lis[top] = i;
+					if(check(lis[l],i))
+					{
+						if(l <= top)
+						{
+							if(!check(i, lis[l-1]))
+								continue;
+						}
+						lis[l] = i;
+						found = true;
+						break;
+					}
 				}
+
+				if(!found)
+				{
+					if(check(i, lis[top]))
+					{
+						top++;
+						lis[top] = i;
+					}
+				}
+				for(int i = 0; i <= top; i++)
+				{
+					cout << v[lis[i]].num << ' ';
+				}
+				cout << endl;
 			}
-		}
-		//test
+		
+
+		cout << top+1 << endl;
 		for(int i = 0; i <= top; i++)
 		{
-			for(int k = 0; k < m; k++)
-			{
-				cout << v[lis[i]][k] << ' ';
-			}
-			cout << endl;
+			cout << v[lis[i]].num << ' ';
 		}
-		cout << top+1 << endl;
 		cout << endl;
 	}
 
