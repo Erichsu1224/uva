@@ -60,7 +60,7 @@ int main(void)
 			}
 
 			for(int i = in.size()-1; i >= k; i--)
-			{
+			{ 
 				if(in[i] > in[k])
 					continue;
 				if(lis2.size() == 0 || in[i] > lis2.back())
