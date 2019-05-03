@@ -24,11 +24,16 @@ int main(void)
 	while(cases--)
 	{
 		int n;
-		vector<int> lis;
-		vector<int> lis2;
+		int max = 0;
 		vector<int> in;
 
 		scanf("%d", &n);
+		
+		if(n == 0)
+		{
+			printf("0\n");
+			continue;
+		}
 		
 		for(int i = 0; i < n; i++)
 		{
@@ -37,25 +42,39 @@ int main(void)
 			scanf("%d", &a);
 			in.pb(a);
 		}
-
-
 	 
-		for(int i = 0; i < n; i++)
-		{
-			if(lis.size() == 0 || in[i] > lis.back())
-				lis.pb(in[i]);
-			else
-				*lower_bound(lis.begin(), lis.end(), in[i]) = in[i];
+	 	for(int k = 0; k < n; k++)
+	 	{
+	 		vector<int> lis;
+			vector<int> lis2;
+
+			for(int i = k; i < n; i++)
+			{
+				if(in[i] < in[k])
+					continue;
+				if(lis.size() == 0 || in[i] > lis.back())
+					lis.pb(in[i]);
+				else
+					*lower_bound(lis.begin(), lis.end(), in[i]) = in[i];
+				
+			}
+
+			for(int i = in.size()-1; i >= k; i--)
+			{
+				if(in[i] > in[k])
+					continue;
+				if(lis2.size() == 0 || in[i] > lis2.back())
+					lis2.pb(in[i]);
+				else
+					*lower_bound(lis2.begin(), lis2.end(), in[i]) = in[i];
+
+				
+			}
+			if(max < lis.size()+lis2.size()-1)
+				max = lis.size()+lis2.size()-1;
 		}
 
-		for(int i = 0; i < n; i++)
-		{
-			if(lis2.size() == 0 || in[i] < lis2.back())
-				lis2.pb(in[i]);
-			else
-				*lower_bound(lis.begin(), lis2.end(), in[i]) = in[i];
-		}
-
-	    printf("%lu\n", lis.size()+lis2.size()-1);
+	    printf("%d\n", max);
+	    
 	}
 }
