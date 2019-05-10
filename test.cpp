@@ -1,76 +1,37 @@
-#include <cstdio>
-#include <vector>
 #include <iostream>
-#include <cstdlib>
-#include <cstring>
 #include <stack>
-#include <algorithm>
+#include <set>
+#include <map>
+#include <vector>
 using namespace std;
 
-#define maxn 100000+5
+typedef set<int> Set;
 
-struct Item
+map<Set, int> IDcache;
+vector<Set > Setcache; //維護
+
+int ID(set<int> x)
 {
-    Item(){
-        parent = -1;
-        height = 0;
-    }
-    int parent;
-    int height;
-    vector<int> child;
-};
+    if(IDcache.count(x))
+        return IDcache[x];
+    Setcache.push_back(x);
+    return IDcache[x] = Setcache.size()-1;
+} 
 
-Item tree[maxn];
-int total = 0;
-
-int dfs(int node)
-{
-    if(tree[node].child.size() != 0)
-    {
-        for(int i = 0; i < tree[node].child.size(); i++)
-            tree[node].height = max(tree[node].height, dfs(tree[node].child[i]));
-    }
-
-    total += tree[node].height;
-    return tree[node].height+1;
-}
+#define ALL(x) x.begin(), x.end()
+#define INS(x) inserter(x, x.begin())
 
 int main(void)
 {
-    freopen("in.in", "r", stdin);
-    freopen("out.out", "w", stdout);
-
+    stack<int> s;
     int n;
-    scanf("%d", &n);
-
-    //O(N)
-    for(int i = 1; i <= n; i++) 
+    cin >> n;
+    for(int i = 0; i < n; i++)
     {
-        int child;
-        scanf("%d", &child);
-        for(int k = 0; k < child; k++)
-        {
-            int tmp;
-            scanf("%d", &tmp);
-            tree[i].child.push_back(tmp);
-            tree[tmp].parent = i;
-        }
+        string op;
+        cin >> op;
+
+        if(op[0] =='P')
+            s.push(ID(Set()));
     }
-
-    int root;
-
-    //O(logN)
-    for(int i = 1; tree[i].parent != -1; i = tree[i].parent)
-    {
-        root = i;
-    }
-    root = tree[root].parent;
-
-    //O(NlogN)
-    tree[root].height = dfs(root);
-
-    printf("%d\n%d\n", root, total);
-
-
-    return 0;
 }
