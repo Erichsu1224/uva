@@ -13,7 +13,10 @@ using namespace std;
 #define C cases
 #define PB push_back
 #define PP pair<int, int>
+#define maxn 200+5
+#define maxm 50+5
 
+int map[maxn][maxm];
 
 int main(void)
 {
@@ -25,45 +28,26 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-	int n;
+	int n, m;
 
-	while(~scanf("%d", &n))
+	while(~scanf("%d %d", &n, &m) && n && m)
 	{
-		vector<string> v;
-		int max = 0;
+		for(int i = 0; i < n; i++)
+		{
+			for(int j = 0; j < m; j++)
+			{
+				scanf("%d", &map[i][j]);
+			}
+		}
 
 		for(int i = 0; i < n; i++)
 		{
-			string tmp;
-			cin >> tmp;
-			v.PB(tmp);
-
-			if(tmp.size() > v[max].size())
-				max = i;
+			for(int j = 0; j < m; j++)
+			{
+				printf("%d", map[i][j]);
+			}
+			printf("\n");
 		}
-
-		int k = (60-v[max].size())/(v[max].size()+2) + 1;
-		k = v.size()/k;
-		max = v[max].size();
-
-
-		sort(v.begin(), v.end());
-
-		vector<string>::iterator it;
-
-		for(it = v.begin(); it != v.end(); it++)
-		{
-			cout << *it << endl;
-		}
-
-		for(int i = 0; i < 60; i++)
-		{
-			printf("-");
-		}
-		printf("\n");
-
-		for(int i = 0; i < )
-
 
 	}
 
