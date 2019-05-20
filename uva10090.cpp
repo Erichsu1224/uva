@@ -6,6 +6,7 @@
 #include <cstring>
 #include <cmath>
 #include <cstdlib>
+#include <ctime>
 #include <algorithm>
 using namespace std;
 
@@ -26,6 +27,11 @@ int main(void)
 	#endif
 
 	ll n;
+
+	clock_t time;
+
+	time = clock();
+	cout << time << endl;
 
 	while(~scanf("%lld", &n) && n)
 	{
@@ -58,7 +64,13 @@ int main(void)
 			printf("%lld %lld\n", ans1, ans2);
 		if(!found)
 			printf("failed\n");
+
+
 	}
+
+	time = clock()-time;
+	cout << time << endl;
+	cout << (float)time/CLOCKS_PER_SEC << endl;
 
 	return 0;
 }
