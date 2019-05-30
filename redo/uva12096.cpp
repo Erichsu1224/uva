@@ -52,13 +52,10 @@ void UNION(void)
 
 void INTERSERT(void)
 {
-	int tmp1, tmp2;
-	tmp1 = st.top();
-	st.pop();
-	tmp2 = st.top();
-	st.pop();
-
-	
+	set<string> a = m[st.top()];	st.pop();
+	set<string> b = m[st.top()];	st.pop();
+	set<string> tmp;
+	set_intersection(a.begin(), a.end(), b.begin(), b.end(), inserter(tmp, tmp.begin()));
 }
 
 void ADD(void)
