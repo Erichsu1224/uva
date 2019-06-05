@@ -12,7 +12,7 @@ using namespace std;
 #define ll long long
 #define C cases
 #define PB push_back
-#define PP pair<int, int>
+#define PP pair<int, int> z
 
 struct Item
 {
