@@ -44,7 +44,15 @@ int main(void)
 		{
 			int to_x, to_y, from_x, from_y;
 			scanf("%d %d %d %d", &from_x, &from_y, &to_x, &to_y);
-			v.PB((line){point(from_x, from_y), point(to_x, to_y)});
+			v.PB((line){point(from_x, from_y), point(to_x, to_y)}`);
+		}
+
+		int o_x, o_y;
+		scanf("%d %d", &o_x, &o_y);
+
+		for(int i = 0; i < n; i++)
+		{
+			double l = atan2()
 		}
 	}
 

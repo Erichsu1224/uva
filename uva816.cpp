@@ -15,6 +15,8 @@ using namespace std;
 #define PP pair<int, int>
 
 
+string name;
+int node [][][ip]
 int main(void)
 {
 	ios_base::sync_with_stdio(false);
@@ -25,7 +27,9 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
+	
 
+	
 
 	return 0;
 }
