@@ -15,10 +15,16 @@ using namespace std;
 #define PP pair<int, int>
 #define IOS ios_base::sync_with_stdio(false); cin.tie(0)
 
-bool cmp(int a, int b)
+struct Item
 {
-	return a > b;
-}
+	int id;
+	int value;
+
+	bool operator< (const Item& rs)const
+	{
+		return value > rs.value;
+	}
+};
 
 int main(void)
 {
@@ -33,9 +39,8 @@ int main(void)
 
 	while(~scanf("%d", &n))
 	{
-		vector<int> v;
-		vector<int> a;
-		vector<int> b;
+		vector<Item> v;
+		int list[10000];
 		int total_a = 0, total_b = 0;
 
 		for(int i = 0; i < n; i++)
@@ -43,23 +48,39 @@ int main(void)
 			int tmp;
 			scanf("%d", &tmp);
 
-			v.PB(tmp);
+			v.PB((Item){i, tmp});
 		}
 
-		sort(v.begin(), v.end(), cmp);
+		sort(v.begin(), v.end());
 
 		for(int i = 0; i < v.size(); i++)
 		{
 			if(total_a <= total_b)
-				total_a += v[i];
+			{
+				total_a += v[i].value;
+				list[v[i].id] = 1;
+			}
 			else
-				total_b += v[i];
+			{
+				total_b += v[i].value;
+				list[v[i].id] = -1;
+			}
 		}
 
 		if(total_a == total_b)
-			cout << "yes" << endl;
+		{
+			cout << "Yes" << endl;
+			for(int i = 0; i < n; i++)
+			{
+				if(i)
+					printf(" %d", list[i]);
+				else
+					printf("%d", list[i]);
+			}
+			printf("\n");
+		}
 		else
-			cout << "no" << endl;
+			cout << "No" << endl;
 	}
 
 	return 0;
