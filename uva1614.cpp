@@ -34,14 +34,16 @@ int main(void)
 	freopen("in.in", "r", stdin);
 	freopen("out.out", "w", stdout);
 	#endif
+	
 
 	int n;
 
 	while(~scanf("%d", &n))
 	{
 		vector<Item> v;
-		int list[10000];
-		int total_a = 0, total_b = 0;
+		int list[100005];
+		//int total_a = 0, total_b = 0;
+		ll total = 0;
 
 		for(int i = 0; i < n; i++)
 		{
@@ -49,38 +51,45 @@ int main(void)
 			scanf("%d", &tmp);
 
 			v.PB((Item){i, tmp});
+			total += tmp;
 		}
 
 		sort(v.begin(), v.end());
 
-		for(int i = 0; i < v.size(); i++)
+		if(total%2 != 0)
 		{
-			if(total_a <= total_b)
-			{
-				total_a += v[i].value;
-				list[v[i].id] = 1;
-			}
-			else
-			{
-				total_b += v[i].value;
-				list[v[i].id] = -1;
-			}
+			printf("No\n");
+			continue;
 		}
 
-		if(total_a == total_b)
-		{
-			cout << "Yes" << endl;
+		else
+		{		
+			printf("Yes\n");
+
+			total /= 2;
+			
+			for(int i = 0; i < v.size(); i++)
+			{
+				if (v[i].value <= total)
+				{
+					list[v[i].id] = 1;
+					total -= v[i].value;
+				}
+         		else 
+					list[v[i].id] = -1;
+			}
+
 			for(int i = 0; i < n; i++)
 			{
 				if(i)
 					printf(" %d", list[i]);
 				else
 					printf("%d", list[i]);
+
 			}
 			printf("\n");
 		}
-		else
-			cout << "No" << endl;
+		
 	}
 
 	return 0;
