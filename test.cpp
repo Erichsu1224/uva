@@ -13,60 +13,30 @@ using namespace std;
 #define C cases
 #define PB push_back
 #define PP pair<int, int>
-#define maxn 1000+5
+#define maxn 100000+5
 
-int stick[maxn];
-bool used[maxn];
-int n, total;
-
-bool cmp(int a, int b)
+struct Item
 {
-    return a > b;
+    int x, y, weight, dist;
+    Item()
+    {
+        x = y = weight = dist = 0;
+    }
+};
+
+Item point[maxn];
+int sumd[maxn];
+int sumw[maxn];
+int dp[maxn];
+
+int dis(Item a, Item b)
+{
+    return abs(a.x-b.x)+abs(a.y)-b.y;
 }
 
-bool dfs(int index, int counter, int now, int t)
+int func(int j)
 {
-    if(now == t)
-    {
-        if(counter == n)
-        {
-            return true;
-        }
-
-        else
-            now = 0;
-    }
-
-    if(!now)
-    {
-        for(index = 0; used[index]; index++);
-        used[index] = true;
-        if(dfs(index+1, counter+1, now+stick[index], t))
-            return true;
-        used[index] = false;
-    }
-
-    else
-    {
-        for(int i = index; i < n ; i++)
-        {
-            if(used[i] || (i && stick[i] == stick[i-1] && !used[i-1]))
-                continue;
-            if(now + stick[i] <= t)
-            {
-                used[i] = true;
-                if(dfs(i+1, counter+1, now+stick[i], t))
-                {
-                    return true;
-                }
-
-                used[i] = false;
-            }
-        }
-    }
-
-    return false;
-
+    return point[j+1].dist-sumd[j+1]+dp[j];
 }
 
 int main(void)
@@ -79,32 +49,47 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-    while(~scanf("%d", &n) && n)
+    int T;
+
+    cin >> T;
+
+    while(T--)
     {
-        total = 0;
+        int c, n;
 
-        for(int i = 0; i < n; i++)
+        cin >> c >> n;
+
+        for(int i = 1; i <= n; i++)
         {
-            scanf("%d", &stick[i]);
-            total += stick[i];
+            cin >> point[i].x >> point[i].y >> point[i].weight;
+            point[i].dist = dis(point[i], point[0]);
+
+            sumd[i] = sumd[i-1]+dis(point[i], point[i-1]);
+            sumw[i] = sumw[i-1]+point[i].weight;
         }
 
-        //memset(used, 0, sizeof(used));
+        deque<int> Q;
+        Q.PB(0);
 
-        sort(stick, stick+n, cmp);
-        fill(used, used+n, false);
-        //test
-        for(int i = stick[0]; i <= total; i++)
+        for(int i = 1; i <= n; i++)
         {
-            if(total % i == 0)
+            while(!Q.empty() && sumw[i] - sumw[Q.front()] > c)
             {
-                if(dfs(0, 0, 0, i))
-                {
-                    printf("%d\n", i);
-                    break;
-                }
+                Q.pop_front();
             }
+            dp[i] = func(Q.front())+sumd[i]+point[i].dist;
+
+            while(!Q.empty() && func(i) <= func(Q.back()))
+            {
+                Q.pop_back();
+            }
+            Q.PB(i);
         }
+
+        cout << dp[n] << '\n';
+
+        if(T)   cout << '\n';
     }
+
 	return 0;
 }
