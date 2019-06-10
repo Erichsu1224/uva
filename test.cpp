@@ -13,30 +13,30 @@ using namespace std;
 #define C cases
 #define PB push_back
 #define PP pair<int, int>
-#define maxn 100000+5
+#define maxn 100005
 
-struct Item
+struct Point
 {
-    int x, y, weight, dist;
-    Item()
+    int x, y, w, d;
+
+    Point()
     {
-        x = y = weight = dist = 0;
+        x = y = w = d = 0;
     }
 };
 
-Item point[maxn];
-int sumd[maxn];
-int sumw[maxn];
-int dp[maxn];
+Point p[maxn];
+int sumd[maxn], sumw[maxn], dp[maxn];
+int T, n, w;
 
-int dis(Item a, Item b)
+int dist(Point a, Point b)
 {
-    return abs(a.x-b.x)+abs(a.y)-b.y;
+    return abs(a.x-b.x) + abs(a.y-b.y);
 }
 
 int func(int j)
 {
-    return point[j+1].dist-sumd[j+1]+dp[j];
+    return dp[j]-sumd[j+1]+p[j+1].d;
 }
 
 int main(void)
@@ -49,23 +49,19 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-    int T;
-
     cin >> T;
 
     while(T--)
     {
-        int c, n;
-
-        cin >> c >> n;
+        cin >> w >> n;
 
         for(int i = 1; i <= n; i++)
         {
-            cin >> point[i].x >> point[i].y >> point[i].weight;
-            point[i].dist = dis(point[i], point[0]);
+            cin >> p[i].x >> p[i].y >> p[i].w;
 
-            sumd[i] = sumd[i-1]+dis(point[i], point[i-1]);
-            sumw[i] = sumw[i-1]+point[i].weight;
+            p[i].d = dist(p[0], p[i]);
+            sumd[i] = sumd[i-1] + dist(p[i], p[i-1]);
+            sumw[i] = sumw[i-1] + p[i].w;
         }
 
         deque<int> Q;
@@ -73,11 +69,11 @@ int main(void)
 
         for(int i = 1; i <= n; i++)
         {
-            while(!Q.empty() && sumw[i] - sumw[Q.front()] > c)
+            while(!Q.empty() && sumw[i] - sumw[Q.front()] > w)
             {
                 Q.pop_front();
             }
-            dp[i] = func(Q.front())+sumd[i]+point[i].dist;
+            dp[i] = sumd[i]+p[i].d+func(Q.front());
 
             while(!Q.empty() && func(i) <= func(Q.back()))
             {
@@ -87,8 +83,6 @@ int main(void)
         }
 
         cout << dp[n] << '\n';
-
-        if(T)   cout << '\n';
     }
 
 	return 0;
