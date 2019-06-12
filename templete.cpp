@@ -13,12 +13,11 @@ using namespace std;
 #define C cases
 #define PB push_back
 #define PP pair<int, int>
-
+#define IOS ios_base::sync_with_stdio(false); cin.tie(0)
 
 int main(void)
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
+	IOS;
 	
 	#ifndef file
 	freopen("in.in", "r", stdin);

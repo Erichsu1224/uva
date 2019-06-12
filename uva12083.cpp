@@ -58,7 +58,7 @@ void match(void)
 
 			if(stu[j].sex == 'F')	continue;
 
-			if(check(i, j))
+			if(!check(i, j))
 				v[j].PB(i);
 		}
 	}
@@ -83,7 +83,7 @@ int main(void)
 		scanf("%d", &n);		
 
 		input();
-
+		match();
 		//test
 		for(int i = 0; i < n; i++)
 		{

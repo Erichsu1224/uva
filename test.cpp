@@ -6,6 +6,7 @@
 #include <cstring>
 #include <cmath>
 #include <cstdlib>
+#include <set>
 #include <algorithm>
 using namespace std;
 
@@ -13,36 +14,49 @@ using namespace std;
 #define C cases
 #define PB push_back
 #define PP pair<int, int>
-#define maxn 100005
+#define IOS ios_base::sync_with_stdio(false); cin.tie(0)
+#define maxn 500+5
 
-struct Point
+//structure
+struct Student
 {
-    int x, y, w, d;
-
-    Point()
-    {
-        x = y = w = d = 0;
-    }
+    int height;
+    char sex;
+    string music;
+    string sport;
 };
 
-Point p[maxn];
-int sumd[maxn], sumw[maxn], dp[maxn];
-int T, n, w;
-
-int dist(Point a, Point b)
+struct Item 
 {
-    return abs(a.x-b.x) + abs(a.y-b.y);
-}
+    int a, b;
+};
 
-int func(int j)
+//declaration
+int T, n;
+Student s[maxn];
+set<int> boy;
+set<int> girl;
+//test
+vector<Item> v;
+
+//functions
+bool check(int i, int j)
 {
-    return dp[j]-sumd[j+1]+p[j+1].d;
+    if(abs(s[i].height-s[j].height) > 40)
+        return true;
+    if(s[i].sex == s[j].sex)
+        return true;
+    if(s[i].music != s[j].music)
+        return true;
+    if(s[i].sport == s[j].sport)
+        return true;
+    
+    return false;
 }
 
 int main(void)
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
+	IOS;
 	
 	#ifndef file
 	freopen("in.in", "r", stdin);
@@ -53,36 +67,61 @@ int main(void)
 
     while(T--)
     {
-        cin >> w >> n;
+        boy.clear();
+        girl.clear();
+        cin >> n;
 
-        for(int i = 1; i <= n; i++)
+        for(int i = 0; i < n; i++)
         {
-            cin >> p[i].x >> p[i].y >> p[i].w;
-
-            p[i].d = dist(p[0], p[i]);
-            sumd[i] = sumd[i-1] + dist(p[i], p[i-1]);
-            sumw[i] = sumw[i-1] + p[i].w;
+            cin >> s[i].height >> s[i].sex >> s[i].music >> s[i].sport;
         }
 
-        deque<int> Q;
-        Q.PB(0);
-
-        for(int i = 1; i <= n; i++)
+        for(int i = 0; i < n; i++)
         {
-            while(!Q.empty() && sumw[i] - sumw[Q.front()] > w)
+            for(int j = 0; j < n; j++)
             {
-                Q.pop_front();
-            }
-            dp[i] = sumd[i]+p[i].d+func(Q.front());
+                if(i == j)
+                    continue;
+                if(check(i,j) && s[i].sex == 'F' && s[j].sex == 'M')
+                {
+                    if(boy.count(i) || girl.count(j))
+                        continue;
+                    v.PB((Item){i, j});
 
-            while(!Q.empty() && func(i) <= func(Q.back()))
-            {
-                Q.pop_back();
+                    boy.insert(i);
+                    girl.insert(j);
+                }
             }
-            Q.PB(i);
+        }
+        cout << "vector" << endl;
+        for(int i = 0; i < v.size(); i++)
+        {
+            cout << v[i].a << ' ' << v[i].b << endl;
         }
 
-        cout << dp[n] << '\n';
+        set<int>::iterator it;
+
+        cout << "boy:" << endl;
+        for(it = boy.begin(); it != boy.end(); it++)
+        {
+            cout << *it << ' ';
+        }
+        cout << endl;
+
+        cout << "girl:" << endl;
+        for(it = girl.begin(); it != girl.end(); it++)
+        {
+            cout << *it << ' ';
+        }
+        cout << endl;
+
+        //cout << n-se.size() << '\n';
+/*
+        for(int i = 0; i < n; i++)
+        {
+            cout << s[i].height << ' ' << s[i].sex << ' ' << s[i].music << ' ' << s[i].sport << '\n';
+        }
+*/
     }
 
 	return 0;
