@@ -16,7 +16,7 @@ using namespace std;
 #define maxn 100+5
 
 int S[maxn], A[maxn], d[maxn][maxn], visited[maxn][maxn], n;
-
+//S: prefix, A: value, d: dp
 int dp(int i, int j)
 {
     if(visited[i][j])

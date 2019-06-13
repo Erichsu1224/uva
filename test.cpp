@@ -6,7 +6,6 @@
 #include <cstring>
 #include <cmath>
 #include <cstdlib>
-#include <set>
 #include <algorithm>
 using namespace std;
 
@@ -14,45 +13,43 @@ using namespace std;
 #define C cases
 #define PB push_back
 #define PP pair<int, int>
-#define IOS ios_base::sync_with_stdio(false); cin.tie(0)
-#define maxn 500+5
+#define IOS ios_base::sync_with_stdio(false);cin.tie(0)
+#define maxn 100000+5
 
 //structure
-struct Student
+struct rub
 {
-    int height;
-    char sex;
-    string music;
-    string sport;
-};
+    double left, right;
 
-struct Item 
-{
-    int a, b;
+    bool operator<(const rub& rs)const{
+        if(left == rs.left)
+            return right < rs.right;
+        return left < rs.left;
+    }
 };
 
 //declaration
-int T, n;
-Student s[maxn];
-set<int> boy;
-set<int> girl;
-//test
-vector<Item> v;
-
+int n;
+rub r[maxn];
 //functions
-bool check(int i, int j)
+bool solve(double d)
 {
-    if(abs(s[i].height-s[j].height) > 40)
-        return true;
-    if(s[i].sex == s[j].sex)
-        return true;
-    if(s[i].music != s[j].music)
-        return true;
-    if(s[i].sport == s[j].sport)
-        return true;
-    
-    return false;
+    double now = r[0].left+d;
+
+    if(now > r[0].right)
+        return false;
+
+    for(int i = 1; i < n; i++)
+    {
+        now = max(now, r[i].left)+d;
+
+        if(now > r[i].right)
+            return false;
+    }
+
+    return true;
 }
+
 
 int main(void)
 {
@@ -63,65 +60,45 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-    cin >> T;
-
-    while(T--)
+    while(~scanf("%d", &n))
     {
-        boy.clear();
-        girl.clear();
-        cin >> n;
-
         for(int i = 0; i < n; i++)
+            //cin >> r[i].left >> r[i].right;
+            scanf("%lf %lf", &r[i].left, &r[i].right);
+
+
+        //for(int i = 0; i < n; i++)
+        //    cout << r[i].left << ' ' << r[i].right << '\n';
+        
+        sort(r, r+n);
+
+        double left = 0, right = 1000000;
+        double ans = 0.0;
+
+        while((right-left) > 1e-9)
         {
-            cin >> s[i].height >> s[i].sex >> s[i].music >> s[i].sport;
+            //cout << (right+left)/2.0 << endl;
+            if(solve((right+left)/2.0))
+            {              
+                ans = (double)(right+left)/2.0;
+                left = (right+left)/2.0;
+            }
+
+            else
+                right = (right+left)/2.0;
         }
 
-        for(int i = 0; i < n; i++)
-        {
-            for(int j = 0; j < n; j++)
-            {
-                if(i == j)
-                    continue;
-                if(check(i,j) && s[i].sex == 'F' && s[j].sex == 'M')
-                {
-                    if(boy.count(i) || girl.count(j))
-                        continue;
-                    v.PB((Item){i, j});
+        int rp = 0, rq = 1;
 
-                    boy.insert(i);
-                    girl.insert(j);
-                }
+        for(int p, q = 1; q <= n; ++q){
+            p = round(ans * q);
+            if(fabs((double)p/q - ans) < fabs((double)rp/rq - ans)){
+                rp = p;  rq = q; 
             }
         }
-        cout << "vector" << endl;
-        for(int i = 0; i < v.size(); i++)
-        {
-            cout << v[i].a << ' ' << v[i].b << endl;
-        }
-
-        set<int>::iterator it;
-
-        cout << "boy:" << endl;
-        for(it = boy.begin(); it != boy.end(); it++)
-        {
-            cout << *it << ' ';
-        }
-        cout << endl;
-
-        cout << "girl:" << endl;
-        for(it = girl.begin(); it != girl.end(); it++)
-        {
-            cout << *it << ' ';
-        }
-        cout << endl;
-
-        //cout << n-se.size() << '\n';
-/*
-        for(int i = 0; i < n; i++)
-        {
-            cout << s[i].height << ' ' << s[i].sex << ' ' << s[i].music << ' ' << s[i].sport << '\n';
-        }
-*/
+ 
+        printf("%d/%d\n", rp, rq);
+        
     }
 
 	return 0;
