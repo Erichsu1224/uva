@@ -13,100 +13,90 @@ using namespace std;
 #define C cases
 #define PB push_back
 #define PP pair<int, int>
+#define IOS ios_base::sync_with_stdio(false); cin.tie(0)
 #define maxn 1000+5
 
+//structure
 struct Item
 {
-	int id;
-	int cost;
-	vector<int> child;
-	int weight;
-
-	Item(int weight = 0) : weight(weight) { }
-
-	bool operator< (const Item&rs) const
-	{
-		if(weight == rs.weight)
-			return cost < rs.weight;
-		return weight < rs.weight;
-	}
+    double w;
+    int t;
 };
 
-int N, R;
-Item tree[maxn];
-
-int dfs(int a)
-{
-	int n = tree[a].child.size();
-
-	tree[a].weight += tree[a].cost;
-	
-	for(int i = 0; i < n; i++)
-	{
-		tree[a].weight += dfs(tree[a].child[i]);
-	}
-
-	return tree[a].weight;
-}
-
+//declaration
+int n, root, ans;
+int A[maxn];
+int father[maxn];
+bool visit[maxn];
+Item items[maxn];
+//functions
 
 int main(void)
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
+	IOS;
 	
 	#ifndef file
 	freopen("in.in", "r", stdin);
 	freopen("out.out", "w", stdout);
 	#endif
 
-	while(~scanf("%d %d", &N, &R) && N && R)
-	{
-		for(int i = 1; i <= N; i++)
-		{
-			tree[i].id = i;
-			scanf("%d", &tree[i].cost);
-		}
+    while(cin >> n >> root && n && root)
+    {
+        ans = 0;
+        memset(father, 0, sizeof(father));
+        memset(visit, false, sizeof(visit));
+        priority_queue< pair<double, int> > Q;
 
-		for(int i = 0; i < N; i++)
-		{
-			int a, b;
-			scanf("%d %d", &a, &b);
+        for(int i = 1; i <= n; i++)
+        {
+            cin >> A[i];
 
-			tree[a].child.PB(b);
-		}
+            items[i].t = 1;
+            items[i].w = (double)A[i];
+            ans += A[i];
 
-		dfs(R);
-/*
-		for(int i = 1; i <= N; i++)
-		{
-			cout << i  << " " << tree[i].weight << endl;
-		}
-*/
+            if(i == root)
+                continue;
+            Q.push(make_pair(items[i].w, i));
+        }
 
-		priority_queue<Item> q;
-		q.push(tree[R]);
+        for(int i = 1; i <= n-1; i++)
+        {
+            int a, b;
+            cin >> a >> b;
 
-		int counter = 1;
-		int total = 0;
+            father[b] = a;
+        }
 
-		while(!q.empty())
-		{
-			Item tmp = q.top();
-			total += tmp.cost * (counter++);
-			q.pop();
+        for(int i = 1; i < n; i++)
+        {
+            int x = Q.top().second;
+            Q.pop();
 
-			//test
-			cout << tmp.weight << ' ' << tmp.id << endl;
+            while((visit[x] || x == root))
+            {
+                x = Q.top().second;
+                Q.pop();
+            }
 
-			for(int i = 0; i < tmp.child.size(); i++)
-			{
-				q.push(tree[tmp.child[i]]);
-			}
-		}
+            visit[x] = 1;
 
-		cout << total << endl;
-	}
+            ans += A[x]*items[father[x]].t;
+
+            for(int j = 1; j <= n; j++)
+            {
+                if(father[j] == x)
+                    father[j] = father[x];
+            }
+
+            items[father[x]].t += items[x].t;
+            A[father[x]] += A[x];
+            items[father[x]].w = (double)A[father[x]]/items[father[x]].t;
+            Q.push(make_pair(items[father[x]].w, father[x]));
+        }
+
+        cout << ans << '\n';
+    }
 
 	return 0;
-}
+}v

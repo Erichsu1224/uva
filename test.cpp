@@ -1,37 +1,103 @@
 #include <iostream>
-#include <stack>
-#include <set>
-#include <map>
+#include <cstdio>
 #include <vector>
+#include <queue>
+#include <string>
+#include <cstring>
+#include <cmath>
+#include <deque>
+#include <cstdlib>
+#include <algorithm>
 using namespace std;
 
-typedef set<int> Set;
+#define ll long long
+#define C cases
+#define PB push_back
+#define PP pair<int, int>
+#define IOS ios_base::sync_with_stdio(false); cin.tie(0)
+#define maxn
 
-map<Set, int> IDcache;
-vector<Set > Setcache; //維護
+//structure
 
-int ID(set<int> x)
+//declaration
+vector<int> v[8];
+vector<int> deck;
+int tmp;
+//functions
+bool case_A(int i)
 {
-    if(IDcache.count(x))
-        return IDcache[x];
-    Setcache.push_back(x);
-    return IDcache[x] = Setcache.size()-1;
-} 
+    int tmp = v[i][0]+v[i][1]+v[i].back();
 
-#define ALL(x) x.begin(), x.end()
-#define INS(x) inserter(x, x.begin())
+    if(tmp == 10 || tmp == 20 || tmp == 30)
+    {
+        v[i].erase(v[i].begin(), v[i].begin()+2);
+        v[i].erase(v[i].end());
+        return true;
+    }
+        
+    return false;
+}
+
+bool case_B(int i)
+{
+    int tmp = v[i][0]+v[i][v.size()-2]+v[i].back();
+
+    if(tmp == 10 || tmp == 20 || tmp == 30)
+    {
+        v[i].erase(v[i].begin());
+        v[i].erase((v[i].begin()+v.size()-2), v[i].end());
+        return true;
+    }
+        
+    return false;
+}
+
+bool case_C(int i)
+{
+    int tmp = v[i][v.size()-3]+v[i][v.size()-2]+v[i].back();
+
+    if(tmp == 10 || tmp == 20 || tmp == 30)
+    {
+        v[i].erase(v[i].begin()+(v.size()-3), v[i].end());
+        return true;
+    }   
+    return false;
+}
 
 int main(void)
 {
-    stack<int> s;
-    int n;
-    cin >> n;
-    for(int i = 0; i < n; i++)
-    {
-        string op;
-        cin >> op;
+	IOS;
+	
+	#ifndef file
+	freopen("in.in", "r", stdin);
+	freopen("out.out", "w", stdout);
+	#endif
 
-        if(op[0] =='P')
-            s.push(ID(Set()));
+    while(cin >> tmp && tmp)
+    {
+        deck.PB(tmp);
+
+        for(int i = 0; i < 51; i++)
+        {
+            cin >> tmp;
+            deck.PB(tmp);
+        }
+
+        while(true)
+        {
+            for(int i = 0; i < 7; i++)
+            {
+                if(!deck.size())
+                {
+                    
+                }
+                v[i].PB(deck.front());
+                deck.erase(deck.begin());
+                if(case_A(i))
+            }
+
+        }
     }
+
+	return 0;
 }

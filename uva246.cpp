@@ -68,7 +68,7 @@ bool check_st(int i)
         return true;
     }
 
-    if((st[i][0]+st[i][st[i].size()-2]+st[i].back())%10 == 0)
+    else if((st[i][0]+st[i][st[i].size()-2]+st[i].back())%10 == 0)
     {
         hand.PB(st[i][0]);
         hand.PB(st[i][st[i].size()-2]);
@@ -79,7 +79,7 @@ bool check_st(int i)
         return true;
     }
 
-    if((st[i][st[i].size()-3]+st[i][st[i].size()-2]+st[i].back())%10 == 0)
+    else if((st[i][st[i].size()-3]+st[i][st[i].size()-2]+st[i].back())%10 == 0)
     {
         hand.PB(st[i][st[i].size()-3]);
         hand.PB(st[i][st[i].size()-2]);
