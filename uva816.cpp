@@ -120,6 +120,8 @@ void solve(void)
 	printf("No solution Possible\n");
 }
 
+string name;
+int node [][][ip]
 int main(void)
 {
 	IOS;
@@ -129,6 +131,7 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
+<<<<<<< HEAD
 	while(cin >> title && title[0] != 'E')
 	{
 		char dir_s;
@@ -136,7 +139,11 @@ int main(void)
 		dir = dir_id(dir_s);
 		solve();
 	}
+=======
+	
+>>>>>>> 1f8161f2bbca603a7959c8ddc34ba9007e894f18
 
+	
 
 	return 0;
 }

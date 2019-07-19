@@ -100,7 +100,11 @@ void mtch(void)
 			if(stu[j].sex == 'M')	continue;
 
 			if(!check(i, j))
+<<<<<<< HEAD
 				v[i].PB(j);
+=======
+				v[j].PB(i);
+>>>>>>> 1f8161f2bbca603a7959c8ddc34ba9007e894f18
 		}
 	}
 
@@ -128,7 +132,11 @@ int main(void)
 		scanf("%d", &n);		
 
 		input();
+<<<<<<< HEAD
 		mtch();
+=======
+		match();
+>>>>>>> 1f8161f2bbca603a7959c8ddc34ba9007e894f18
 		//test
 		/*
 		for(int i = 0; i < n; i++)
