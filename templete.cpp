@@ -10,7 +10,6 @@
 using namespace std;
 
 #define ll long long
-#define C cases
 #define PB push_back
 #define PP pair<int, int>
 #define IOS ios_base::sync_with_stdio(false); cin.tie(0)

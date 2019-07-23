@@ -1,3 +1,8 @@
+/*
+
+	匈牙利演算法（二分圖）
+
+*/
 #include <iostream>
 #include <cstdio>
 #include <vector>
@@ -17,6 +22,8 @@ using namespace std;
 
 int n;
 vector <int> v[maxn];
+int match[maxn];
+bool visit[maxn];
 
 struct Item
 {
@@ -39,6 +46,8 @@ void input(void)
 
 bool check(int a, int b)
 {
+	if(stu[a].sex == stu[b].sex)
+		return true;
 	if(abs(stu[a].height - stu[b].height) > 40)
 		return true;
 	if(stu[a].music != stu[b].music)
@@ -48,7 +57,39 @@ bool check(int a, int b)
 	return false;
 }
 
-void match(void)
+bool KM(int x)
+{
+	for(int i = 0; i < v[x].size(); i++)
+	{
+		int tmp = v[x][i];
+		if(visit[tmp])	continue;
+
+		visit[tmp] = 1;
+		if(match[tmp] == -1 || KM(match[tmp]))
+		{
+			match[tmp] = x;
+			return true;
+		}
+	}
+	return false;
+}
+
+int solve(int n)
+{
+	int max_m = 0;
+	memset(match, -1, sizeof(match));
+
+	for(int i = 0; i < n; i++)
+	{
+		memset(visit, 0, sizeof(visit));
+
+		if(KM(i)) max_m++;
+	}
+
+	return max_m;
+}
+
+void mtch(void)
 {
 	for(int i = 0; i < n; i++)
 	{
@@ -56,13 +97,21 @@ void match(void)
 		{
 			if(i == j) continue;
 
-			if(stu[j].sex == 'F')	continue;
+			if(stu[j].sex == 'M')	continue;
 
 			if(!check(i, j))
+<<<<<<< HEAD
+				v[i].PB(j);
+=======
 				v[j].PB(i);
+>>>>>>> 1f8161f2bbca603a7959c8ddc34ba9007e894f18
 		}
 	}
+
+	cout << n-solve(n) << '\n';
 }
+
+
 
 int main(void)
 {
@@ -83,8 +132,13 @@ int main(void)
 		scanf("%d", &n);		
 
 		input();
+<<<<<<< HEAD
+		mtch();
+=======
 		match();
+>>>>>>> 1f8161f2bbca603a7959c8ddc34ba9007e894f18
 		//test
+		/*
 		for(int i = 0; i < n; i++)
 		{
 			printf("%d: ", i);
@@ -94,6 +148,7 @@ int main(void)
 			}
 			cout << endl;
 		}
+		*/
 	}
 
 	return 0;

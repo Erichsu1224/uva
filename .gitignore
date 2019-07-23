@@ -1,0 +1,11 @@
+<<<<<<< HEAD
+.vscode
+=======
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+>>>>>>> 1f8161f2bbca603a7959c8ddc34ba9007e894f18
+
+.DS_Store

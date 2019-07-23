@@ -90,7 +90,11 @@ int main(void)
 		int rp = 0, rq = 1;
 
         for(int p, q = 1; q <= n; ++q){
+<<<<<<< HEAD
+            p = round(ans * q); //4捨5入
+=======
             p = round(ans * q);
+>>>>>>> 1f8161f2bbca603a7959c8ddc34ba9007e894f18
             if(fabs((double)p/q - ans) < fabs((double)rp/rq - ans)){
                 rp = p;  rq = q; 
             }
