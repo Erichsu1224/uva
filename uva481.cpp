@@ -7,45 +7,72 @@
 #include <cmath>
 #include <cstdlib>
 #include <algorithm>
+#include <stack>
 using namespace std;
 
 #define ll long long
-#define C cases
 #define PB push_back
 #define PP pair<int, int>
+#define IOS ios_base::sync_with_stdio(false); cin.tie(0)
+#define maxn
 
+//structure
+
+//declaration
+vector<int> num;
+vector<int> lis;
+vector<int> pos;
+stack<int> S;
+//functions
 
 int main(void)
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
+	IOS;
 	
 	#ifndef file
 	freopen("in.in", "r", stdin);
 	freopen("out.out", "w", stdout);
 	#endif
 
-	vector<int> v;
+	int tmp;
 
-	int n;
-	while(~scanf("%d", &n))
+	while(cin >> tmp)
 	{
-		v.PB(n);
+		num.PB(tmp);
+		if(lis.size()==0||tmp>lis.back())
+		{
+			lis.push_back(tmp);
+			pos.PB(lis.size());
+		}
+    		
+		else
+		{
+			pos.PB(lower_bound(lis.begin(),lis.end(),tmp)-lis.begin()+1);
+			*lower_bound(lis.begin(),lis.end(),tmp)=tmp;
+		}
+    		
+	}
+	//test
+	
+
+	cout << lis.size() << '\n';
+	cout << "-\n";
+	
+	int now = lis.size();
+	for(int i = pos.size(); i >= 0; i--)
+	{
+		if(pos[i] == now)	
+		{
+			S.push(i);
+			now--;
+		}
 	}
 
-	for(int i = 0; i < v.size(); i++)
+	while(!S.empty())
 	{
-		cout << v[i] << ' ';
+		cout << num[S.top()] << '\n';
+		S.pop();
 	}
-	cout << endl;
-
-	int top = 1;
-	int lis[v.size()+5];
-	fill(lis, lis+(v.size()+5), -1);
-
-	for(int i = 0; i < v.size(); i++)
-	{
-		//if(v[i]>)
-	}
+	
 	return 0;
 }
