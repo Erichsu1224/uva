@@ -48,6 +48,8 @@ int main(void)
         memset(g, 0, sizeof(g));
         cin >> r >> c;
 
+
+        //complexity O(N^2)
         for(int i = 1; i <= r; i++)
         {
             int k, flag, num;
@@ -103,10 +105,11 @@ int main(void)
         cout << endl;
         
 
-       
+       //Complexity (N^2)
         for(int i = 1; i <= c; i++)
         {
             stack<Item> S;
+            bool flag = false;
             
             for(int j = 1; j <= r; j++)
             {   
@@ -135,8 +138,18 @@ int main(void)
                         //test
                         cout << hold << ' ' << tmp.w << ' ' << j << ' ' << tmp.loc << endl;
                         max_total = max(max_total, hold);
+                        flag = true;
                     }
-                } 
+                }
+
+                if(flag)
+                {
+                    //scan all
+                    for(int k = 1; k <= r; k++)
+                    {
+                        for(int l = 1; )
+                    }
+                }
             }
             cout << endl;
         }

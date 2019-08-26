@@ -16,6 +16,8 @@ using namespace std;
 #define C cases
 #define PB push_back
 #define PP pair<int, int>
+#define MP make_pair
+#define all(x) x.begin(), x.end()
 
 /*
 PUSH:裝一個空集合進去stack
@@ -48,6 +50,7 @@ void UNION(void)
 	st.pop();
 	tmp2 = st.top();
 	st.pop();
+	set_union(a.begin(), a.end(), b.begin(), b.end(), inserter(tmp, tmp.begin()));
 }
 
 void INTERSERT(void)
