@@ -14,17 +14,15 @@ using namespace std;
 #define PP pair<int, int>
 #define IOS ios_base::sync_with_stdio(false); cin.tie(0)
 #define all(x) x.begin(), x.end()
-#define maxn 1000+5
+#define maxn 100+5
 
 //structure
 
 //declaration
-pair<int, int> vote[maxn];
+int T;
+int n;
+char gr[maxn];
 //functions
-bool cmp(PP a, PP b)
-{
-	return a.first > b.first;
-}
 
 int main(void)
 {
@@ -35,34 +33,30 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-	int T;	cin >> T;
+    cin >> T;
 
-	while(T--)
-	{
-		int n; cin >> n;
-		
-		//init
-		for(int i = 0; i <= n; i++)
-		{
-			vote[i].first = 0;
-			vote[i].second = i;
-		}
+    for(int cases = 1; cases <= T; cases++)
+    {
+        int ans = 0;
+        cin >> n;
 
-		for(int i = 0; i < n; i++)
-		{
-			int tmp;	cin >> tmp;
-			vote[tmp].first++;
-		}
+        for(int i = 0; i < n; i++)
+        {
+            cin >> gr[i];
+        }
 
-		sort(vote, vote+(n+1), cmp);
+        for(int i = 0; i < n; i++)
+        {
+            if(gr[i] == '.')
+            {
+                ans++;
+                i += 2;
+            }
+                
+        }
 
-		if(vote[0].first <= n/2)
-		{
-			cout << -1 << '\n';
-			continue;
-		}
-		cout << vote[0].second << '\n';
-	}
+        cout << "Case " << cases << ": " << ans << '\n';
+    }
 
 	return 0;
 }

@@ -13,7 +13,6 @@ using namespace std;
 #define PB push_back
 #define PP pair<int, int>
 #define IOS ios_base::sync_with_stdio(false); cin.tie(0)
-#define all(x) x.begin(), x.end()
 #define maxn
 
 //structure
@@ -31,7 +30,18 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
+    int T;
+    cin >> T;
 
+    while(T--)
+    {
+        ll in;
+
+        cin >> in;
+
+        in++;
+        cout << in*in-1 << '\n';
+    }
 
 	return 0;
 }

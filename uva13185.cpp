@@ -31,7 +31,34 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
+    int T;
+    cin >> T;
 
+    while(T--)
+    {
+        int in;
+        int total = 1;
+
+        cin >> in;
+
+        for(int i = 2; i <= sqrt(in); i++)
+        {
+            if(in%i == 0)
+            {
+                total += i;
+                if(in/i == i)
+                    continue;
+                total += in/i;
+            }
+        }
+
+        if(in < total)
+            cout << "abundant\n";
+        else if(in == total)
+            cout << "perfect\n";
+        else
+            cout << "deficient\n";
+    }   
 
 	return 0;
 }

@@ -14,17 +14,13 @@ using namespace std;
 #define PP pair<int, int>
 #define IOS ios_base::sync_with_stdio(false); cin.tie(0)
 #define all(x) x.begin(), x.end()
-#define maxn 1000+5
+#define maxn
 
 //structure
 
 //declaration
-pair<int, int> vote[maxn];
+int T;
 //functions
-bool cmp(PP a, PP b)
-{
-	return a.first > b.first;
-}
 
 int main(void)
 {
@@ -35,34 +31,28 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-	int T;	cin >> T;
+    cin >> T;
+    
+    for(int cases = 1; cases <= T; cases++)
+    {
+        ll st[3];
 
-	while(T--)
-	{
-		int n; cin >> n;
-		
-		//init
-		for(int i = 0; i <= n; i++)
-		{
-			vote[i].first = 0;
-			vote[i].second = i;
-		}
+        cin >> st[0] >> st[1] >> st[2];
 
-		for(int i = 0; i < n; i++)
-		{
-			int tmp;	cin >> tmp;
-			vote[tmp].first++;
-		}
+        sort(st, st+3);
 
-		sort(vote, vote+(n+1), cmp);
+        printf("Case %d: ", cases);
 
-		if(vote[0].first <= n/2)
-		{
-			cout << -1 << '\n';
-			continue;
-		}
-		cout << vote[0].second << '\n';
-	}
+        if(st[0] + st[1] <= st[2] || st[0] <= 0)   cout << "Invalid\n";
+
+        else if (st[0] == st[1] &&  st[1] == st[2])
+            cout << "Equilateral\n";
+        else if(st[0] == st[1] || st[1] == st[2])
+            cout << "Isosceles\n";
+        else
+            cout << "Scalene\n";
+
+    }
 
 	return 0;
 }
