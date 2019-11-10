@@ -1,19 +1,16 @@
-#include <iostream>
-#include <cstdio>
-#include <vector>
-#include <queue>
-#include <string>
-#include <cstring>
-#include <cmath>
-#include <cstdlib>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define ll long long
 #define PB push_back
-#define PP pair<int, int>
-#define IOS ios_base::sync_with_stdio(false); cin.tie(0)
+#define PII pair<int, int>
+#define MP make_pair
 #define all(x) x.begin(), x.end()
+#define REP(x, y, z) for(int x = y; x <= z; x++)
+#define REPP(x, y, z) for(int x = y; x >= z; x--)
+#define F first
+#define S second
+#define MSET(x, y) memset(x, y, sizeof(x)) 
 #define maxn
 
 //structure
@@ -24,9 +21,7 @@ using namespace std;
 
 int main(void)
 {
-	IOS;
-	
-	#ifndef file
+	#ifdef DBG
 	freopen("in.in", "r", stdin);
 	freopen("out.out", "w", stdout);
 	#endif

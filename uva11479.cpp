@@ -45,7 +45,7 @@ int main(void)
 
         if(st[0] + st[1] <= st[2] || st[0] <= 0)   cout << "Invalid\n";
 
-        else if (st[0] == st[1] &&  st[1] == st[2])
+        else if (st[0] == st[2])
             cout << "Equilateral\n";
         else if(st[0] == st[1] || st[1] == st[2])
             cout << "Isosceles\n";

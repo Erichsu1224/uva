@@ -1,94 +1,58 @@
-//UVA 686
-//prime number
-//binary search
-
-#include <iostream>
-#include <cmath>
+#include <bits/stdc++.h>
 using namespace std;
 
-int prime[10000];
+#define ll long long
+#define PB push_back
+#define PII pair<int, int>
+#define MP make_pair
+#define all(x) x.begin(), x.end()
+#define REP(x, y, z) for(int x = y; x <= z; x++)
+#define F first
+#define S second
+#define maxn 100000
+#define MSET(x, y) memset(x, y, sizeof(x))
+//structure
+
+//declaration
+bool prime[maxn];
+int n;
+//functions
 
 int main(void)
 {
-    //建質數表
-    //Complexity O(nlogn)
-    prime[0] = 2;
-    int k = 1;
+	#ifdef DBG
+	freopen("in.in", "r", stdin);
+	freopen("out.out", "w", stdout);
+	#endif
 
-    for(int i = 2; i <= 32708; i++)
+    //prime table
+    MSET(prime, true);
+    prime[0] = prime[1] = false;
+
+    REP(i, 2, 100000-1)
     {
-        bool found = true;
-        for(int n = 2; n <= sqrt(i); n++)
+        if(prime[i])
         {
-            if(i % n == 0)
-            {
-                found = false;
-                break;
-            }
+            for(int j = i*2; j < 100000; j+=i)
+                prime[j] = false;
         }
-
-        if(found)
-            prime[k++] = i;
-    }   
-    //end
-
-    //binary search
-    //complexity O(logn)
-    int input;
-
-    while(scanf("%d", &input))
-    {
-        if(input == 0)
-        {
-            break;
-        }
-        int middle = (k-1)/2, left = 0, right = k-1;
-
-        while(left < right)
-        {
-           if(input == prime[middle])
-               break;
-
-            if(input > prime[middle])
-           {
-                left = middle+1;
-                middle = (left + right)/2;
-            }
-
-            if(input < prime[middle])
-            {
-                right = middle-1;
-                middle = (left + right)/2;
-            }
-        }
-
-        //complete
-            int cases = 0;
-        left = 0;
-        right = middle;
-
-        while(right >= left)
-        {
-            if(prime[left]+prime[right] == input)
-            {
-                cases++;
-                left++;
-                right--;
-            }
-
-            if(input-prime[right] > prime[left])
-            {
-                left++;
-            }
-
-            if(input-prime[right] < prime[left])
-            {
-                right--;
-            }
-        }
-
-        printf("%d\n", cases);
     }
-    return 0;
-}
 
+    while(~scanf("%d", &n) && n)
+    {
+        int cnt = 0;
+        for(int i = n; i >= 1; i--)
+        {
+            if(i < n-i)
+                break;
+            if(prime[i] && prime[n-i])
+            {
+                cnt++;
+            }
+        }
+
+        printf("%d\n", cnt);
+    }
+
+	return 0;
+}
