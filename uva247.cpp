@@ -1,103 +1,112 @@
-#include <iostream>
-#include <cstdio>
-#include <vector>
-#include <queue>
-#include <string>
-#include <cstring>
-#include <cmath>
-#include <cstdlib>
-#include <map>
-#include <set>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define ll long long
 #define PB push_back
-#define PP pair<int, int>
-#define IOS ios_base::sync_with_stdio(false); cin.tie(0)
+#define PII pair<int, int>
+#define MP make_pair
+#define all(x) x.begin(), x.end()
+#define REP(x, y, z) for(int x = y; x <= z; x++)
+#define REPP(x, y, z) for(int x = y; x >= z; x--)
+#define F first
+#define S second
+#define MSET(x, y) memset(x, y, sizeof(x)) 
 #define maxn 25+5
 
 //structure
 
 //declaration
 int n, m;
-map<string, int> M;
-set<string> S;
-string a, b;
+vector<string> idx;
+int cir[maxn];
+int adj[maxn][maxn];
+
 //functions
 
-int arr[maxn];
-
-void init(int n) // give a initial length
+int GetIdx(string str)
 {
-	for(int i=0; i<n; i++)
-		arr[i] = -1;
-}
+    if(idx.size() != 0)
+    {
+        for(int i = 0; i < idx.size(); i++)
+        {
+            if(str == idx[i])
+            {
+                return i;
+            }
+        }
+    }
 
-int find(int x)
-{ // find the father point
-	return arr[x] < 0 ? x : (arr[x] = find(arr[x])); // update every child to the other father
-}
-
-void Union(int x, int y)
-{
-	x = find(x);
-	y = find(y);
-	
-	if(x == y)
-		return;
-
-	if(arr[x] <= arr[y])
-	{
-		arr[x] += arr[y];
-		arr[y] = x;
-	}
-	else
-	{
-		arr[y] += arr[x];
-		arr[x] = y;
-	}
+    idx.PB(str);
+    return idx.size()-1;
 }
 
 int main(void)
 {
-	IOS;
-	
-	#ifndef file
+	#ifdef DBG
 	freopen("in.in", "r", stdin);
 	freopen("out.out", "w", stdout);
 	#endif
 
-    while(cin >> n >> m && n && m)
+    int cases = 0;
+
+    while(~scanf("%d %d", &n, &m))
     {
-        init(n);
+        if(!n && !m)
+            break;
+        if(cases)
+            puts("");
+        printf("Calling circles for data set %d:\n", ++cases);
+        //init
+        idx.clear();
+        MSET(adj, 0);
+        MSET(cir, -1);
 
-        int counter = 0;
-        for(int i = 0; i < m; i++)
+        string x, y;
+
+        REP(i, 1, m)
         {
-            cin >> a >> b;
-            if(!S.count(a))
-            {
-                S.insert(a);
-                M[a] = counter++;;
-            }
+            cin >> x >> y;
+            int a = GetIdx(x);
+            int b = GetIdx(y);
 
-            if(!S.count(b))
-            {
-                S.insert(b);
-                M[b] = counter++;
-            }
-
-            Union(M[a], M[b]); 
+            adj[a][b] = 1;
         }
 
-        for(int i = 0; i < n; i++)
-        {
-            cout << arr[i] << ' ';
-        }
-        cout << endl;
+        REP(k, 0, n-1)
+            REP(i, 0, n-1)
+                REP(j, 0, n-1)
+                    if(adj[i][k] && adj[k][j])
+                        adj[i][j] = 1;
 
-        for(int i = 0; i < )
+        int cnt = 1;
+
+        REP(i, 0, n-1)
+        {
+            if(cir[i] == -1)
+            {
+                cir[i] = cnt;
+                REP(j, i+1, n-1)
+                    if(adj[i][j] && adj[j][i])
+                        cir[j] = cnt;
+                cnt++;
+            }
+        }
+
+        REP(i, 1, cnt-1)
+        {
+            bool flag = false;
+            REP(j, 0, n-1)
+            {
+                if(cir[j] == i)
+                {
+                    if(flag)
+                        printf(", ");
+                    cout << idx[j];
+                    flag = true;
+                }
+            }
+            puts("");
+        }
     }
 
 	return 0;
