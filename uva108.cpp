@@ -37,11 +37,17 @@ int main(void)
             REP(j, 1, n)
             {
                 scanf("%d", &pre[i][j]);
-                pre[i][j] += (pre[i][j-1]+pre[i-1][j]);
+                pre[i][j] += pre[i][j-1];
             }
         }
 
-        int ans = 0;
+        REP(j, 1, n)
+        {
+            REP(i, 1, n)
+                pre[i][j] += pre[i-1][j];
+        }
+
+        int ans = -1e9;
 
         REP(i, 1, n)
             REP(j, 1, n)
