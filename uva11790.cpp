@@ -31,12 +31,6 @@ int lds[maxn];
 
 int main(void)
 {
-	IOS;
-	
-	#ifndef file
-	freopen("in.in", "r", stdin);
-	freopen("out.out", "w", stdout);
-	#endif
 
     cin >> T;
     
@@ -68,6 +62,10 @@ int main(void)
                 }
             }
             lis[i] += house[i].w;
+
+            for(int j = 0; j < n; j++)
+            cout << lis[j] << ' ';
+            cout << endl;
 
             if(maxh < lis[i])
                 maxh = lis[i];

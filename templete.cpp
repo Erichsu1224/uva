@@ -11,6 +11,7 @@ using namespace std;
 #define F first
 #define S second
 #define MSET(x, y) memset(x, y, sizeof(x)) 
+#define EB emplace_back
 #define maxn
 
 //structure
