@@ -17,7 +17,7 @@ using namespace std;
 //structure
 
 //declaration
-
+int T;
 //functions
 
 int main(void)
@@ -27,7 +27,9 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
+	cin >> T;
 
+	
 
 	return 0;
 }

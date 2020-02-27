@@ -6,34 +6,22 @@ using namespace std;
 #define PII pair<int, int>
 #define MP make_pair
 #define all(x) x.begin(), x.end()
-#define REP(x, y, z) for(int x = y; x <= z; x++)
-#define REPP(x, y, z) for(int x = y; x >= z; x--)
+#define REP(x, y, z) for(int x = (y); x <= (z); x++)
+#define REPP(x, y, z) for(int x = (y); x >= (z); x--)
 #define F first
 #define S second
 #define MSET(x, y) memset(x, y, sizeof(x)) 
 #define EB emplace_back
-#define maxn 100000+5
+#define maxn 100000
+#define IOS ios::sync_with_stdio(false); cin.tie(0);
 
 //structure
 
 //declaration
-int n, a, b;
-int dis[2][maxn];
-vector<int> g[maxn];
+int n;
+char c;
+int st[maxn];
 //functions
-
-void dfs(int now, int fa, int t)
-{
-    dis[t][now] = dis[t][fa]+1;
-
-    for(auto i : g[now])
-    {
-        if(i != fa)
-        {
-            dfs(i, now, t);
-        }
-    }
-}
 
 int main(void)
 {
@@ -42,49 +30,78 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-	scanf("%d", &n);
-	scanf("%d %d", &a, &b);
+	IOS;
 
-	//init
-	REP(i, 0, n)
-		g[i].clear();
-
-	int x, y;
-
-	for(int i = 0; i < n-1; i++)
+	while(cin >> n)
 	{
-		scanf("%d %d", &x, &y);
+		bool ans = false;
+		int total = 0, dep = 0;
+		// stack<int> st;
+		string num;
+		bool flag = false;
+		char c1, c2, c3;
 
-		g[x].EB(y);
-		g[y].EB(x);
-	}	
+		while(cin >> c)
+		{
+			if(c == ' ' || c == '\n')
+				continue;
+			
+			if(c >= '0' && c <= '9' || c == '-')
+			{
+				flag = true;
+				num += c;
+			}
 
-    dis[0][0] = dis[1][0] = -1;
+			if(c == '(')
+			{
+				if(flag)
+				{
+					// st.push(stoi(num));
+					// total += st.top();
+					st[dep] = stoi(num);
 
-	dfs(a, 0, 0);
-    dfs(b, 0, 1);
+					num = "";
+					// cout << "IN: " << st.top() << ' ' << total << '\n';
+					flag = false;
+				}
+				dep++;
+			}
 
-    int ans = 0;
+			if(c == ')')
+			{
+				dep--;
+				if(c1 == '(' && c2 == ')' && c3 == '(')
+				{
+					total = 0;
+					REP(i, 1, dep)
+						total += st[i];
+					if(total == n)
+						ans = true;
+					// total -= st.top();
+					// st.pop();
+				}
+				else if(c2 == '(' && c3 == ')')
+				{
+					// total -= st.top();
+					// st.pop();
+				}
+			}
+				
 
-    REP(i, 1, n)
-    {
-        cout << dis[0][i] << ' ';
-    }
-    cout << endl;
+			c1 = c2;
+			c2 = c3;
+			c3 = c;
 
-    REP(i, 1, n)
-    {
-        cout << dis[1][i] << ' ';
-    }
-    cout << endl;
+			if(dep == 0)
+				break;
+		}
 
-    REP(i, 1, n)
-    {
-        if(dis[0][i] < dis[1][i])
-            ans = max(ans, dis[1][i]-1);
-    }
+		if(ans)
+			cout << "yes\n";
+		else
+			cout << "no\n";
+	}
+	
 
-    printf("%d\n", ans);
-
-	// return 0;
+	return 0;
 }

@@ -1,145 +1,152 @@
-#include <iostream>
-#include <cstdio>
-#include <vector>
-#include <queue>
-#include <string>
-#include <cstring>
-#include <cmath>
-#include <cstdlib>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define ll long long
-#define C cases
 #define PB push_back
-#define PP pair<int, int>
-#define IOS ios_base::sync_with_stdio(false); cin.tie(0)
-#define maxn
+#define PII pair<int, int>
+#define MP make_pair
+#define all(x) x.begin(), x.end()
+#define REP(x, y, z) for(int x = (y); x <= (z); x++)
+#define REPP(x, y, z) for(int x = (y); x >= (z); x--)
+#define F first
+#define S second
+#define MSET(x, y) memset(x, y, sizeof(x)) 
+#define EB emplace_back
+#define maxn 15
 
 //structure
 struct Node
 {
-	int r, c, dir;
-	Node() {}
-	Node(int r, int c, int dir) : r(r), c(c), dir(dir){}
-};
+	int x, y, d, c;
 
+	Node(int x, int y, int d, int c):x(x),y(y),d(d),c(c){}
+	Node(){}
+};
 //declaration
-string title;
-int r1, c1, r2, c2, r0, c0;
-char* turns = "FLR";
-char* dirs = "NESW";
-int dr[] = {-1, 0, 1, 0};
-int dc[] = {0, 1, 0, -1};
-int has_edge[15][15][15][15];
-int d[15][15][15];
-Node p[15][15][15];
-int dir;
+string name;
+string tmp;
+pair<int, int> start, ed;
+map<char, int> dir;
+map<char, int> dirr;
+char dir_s;
+bool maze[maxn][maxn][maxn][maxn];
+Node father[maxn][maxn][maxn];
+Node now;
+bool flag;
+int x, y;
+int rr[] = {-1, 0, 1, 0};
+int cc[] = {0, 1, 0, -1};
 
 //functions
-
-//方向和行為的轉換
-int turn_id(char a)
-{
-	return strchr(turns, a) - turns;
-}
-
-int dir_id(char a)
-{
-	return strchr(dirs, a) - dirs;
-}
-
-Node walk(const Node& u, int turn)
-{
-	int dir = u.dir;
-	if(turn == 1)
-		dir = (dir+3) % 4;
-	if(turn == 2)
-		dir = (dir+1) % 4;
-
-	return Node(u.r+dr[dir], u.c+dc[dir], dir);
-}
-
-
-void print_ans(Node u)
-{
-	//從終點回朔到起點
-	vector<Node> nodes;
-	for(;;)
-	{
-		nodes.push_back(u);
-		if(d[u.r][u.c][u.dir] == 0)
-			break;
-		u = p[u.r][u.c][u.dir];
-	}
-
-	nodes.push_back(Node(r0, c0, dir));
-
-	int cnt = 0;
-
-	for(int i = nodes.size()-1; i >= 0; i--)
-	{
-		if(cnt % 10 == 0)
-			printf(" ");
-		printf(" (%d,%d)", nodes[i].r, nodes[i].c);
-		if(++cnt%10 == 0)
-			printf("\n");
-	}
-
-	if(nodes.size() % 10 != 0)
-		printf("\n");
-}
-
-void solve(void)
+void bfs(int r, int c, int d)
 {
 	queue<Node> q;
-	memset(d, -1, sizeof(d));
-	Node u(r1, c1, dir);
-	d[u.r][u.c][u.dir] = 0;
-	q.push(u);
+
+	q.push(Node(r, c, d, 1));
+
 	while(!q.empty())
 	{
-		Node u = q.front();
-		q.pop();
-		if(u.r == r2 && u.c == c2)
+		now = q.front(); q.pop();
+		// printf("%d %d %d %d\n", now.x, now.y, now.d, now.c);
+		if(now.x == ed.F && now.y == ed.S)
 		{
-			print_ans(u);
-			return;
+			flag = true;
+			break;
 		}
+			
 		for(int i = 0; i < 3; i++)
 		{
-			Node v = walk(u, i);
-			if(has_edge[u.r][u.c][u.dir][i] && d[v.r][v.c][v.dir] < 0)
+			if(maze[now.x][now.y][now.d][i])
 			{
-				d[v.r][v.c][v.dir] = d[u.r][u.c][u.dir]+1;
-				p[v.r][v.c][v.dir] = u;
-				q.push(v);
+				int hold = (now.d+i+3)%4;
+
+				if(father[now.x+rr[hold]][now.y+cc[hold]][hold].x < 0)
+				{
+					father[now.x+rr[hold]][now.y+cc[hold]][hold] = now;
+					q.push(Node(now.x+rr[hold], now.y+cc[hold], hold, now.c+1));
+				}
 			}
 		}
 	}
-	printf("No solution Possible\n");
 }
 
-string name;
-int node [][][ip]
+void print_ans(void)
+{
+	vector<Node> v;
+	while(true)
+	{
+		v.emplace_back(now);
+		if(now.x == start.F && now.y == start.S && now.c == 0)
+			break;
+		now = father[now.x][now.y][now.d];
+	}
+	int cnt = 0;
+	for(int i = v.size()-1; i >= 0; i--)
+	{
+		cnt++;
+		if(cnt%10 == 1)
+			printf(" ");
+		printf(" (%d,%d)", v[i].x, v[i].y);
+		if(cnt%10 == 0)
+			puts("");
+	}
+
+	if(cnt % 10 != 0)
+		puts("");
+}
+
 int main(void)
 {
-	IOS;
-	
-	#ifndef file
+	#ifdef DBG
 	freopen("in.in", "r", stdin);
 	freopen("out.out", "w", stdout);
 	#endif
 
-	while(cin >> title && title[0] != 'E')
+	dir['N'] = 0; dir['E'] = 1; dir['S'] = 2; dir['W'] = 3;
+	dirr['L'] = 0; dirr['F'] = 1; dirr['R'] = 2;
+
+	while(cin >> name)
 	{
-		char dir_s;
-		cin >> r1 >> c1 >> dir_s >> r2 >> c2;
-		dir = dir_id(dir_s);
-		solve();
+		if(name == "END")
+			break;
+
+		MSET(maze, false);
+		MSET(father, -1);
+		flag = false;
+
+		cin >> start.F >> start.S >> dir_s >> ed.F >> ed.S;
+
+		while(cin >> x && x)
+		{
+			cin >> y;
+			int a, b;
+
+			while(cin >> tmp)
+			{
+				if(tmp == "*")
+					break;
+				for(int i = 0; i < tmp.size(); i++)
+				{
+					if(!i)
+						a = dir[tmp[i]];
+					else
+					{
+						b = dirr[tmp[i]];
+						maze[x][y][a][b] = true;
+					}
+				}
+			}
+		}
+
+		cout << name << '\n';
+
+		father[start.F+rr[dir[dir_s]]][start.S+cc[dir[dir_s]]][dir[dir_s]] = Node(start.F, start.S, dir[dir_s], 0);
+		bfs(start.F+rr[dir[dir_s]], start.S+cc[dir[dir_s]], dir[dir_s]);
+		
+		if(flag)
+			print_ans();
+		if(!flag)
+			printf("  No Solution Possible\n");
 	}
-
-	
-
 	return 0;
 }

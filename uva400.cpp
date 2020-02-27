@@ -14,12 +14,15 @@ using namespace std;
 #define PB push_back
 #define PP pair<int, int>
 #define maxn 100+5
+#define EB emplace_back
+
+string v[maxn];
 
 
 int main(void)
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
+	// ios_base::sync_with_stdio(false);
+	// cin.tie(0);
 	
 	#ifndef file
 	freopen("in.in", "r", stdin);
@@ -28,9 +31,8 @@ int main(void)
 
 	int n;
 
-	while(cin >> n)
+	while(~scanf("%d\n", &n))
 	{
-		string v[maxn];
 		int max = 0;
 
 
@@ -45,57 +47,60 @@ int main(void)
 
 		int k = (60-max)/(max+2) + 1;
 		int l;
-		if(n % k == 0)
-		{
+
+		if(n%k == 0)
 			l = n/k;
-		}
 		else
 			l = n/k+1;
 
-		//printf("%d %d\n", k ,l);
-
 		sort(v, v+n);
 
-/*
-		vector<string>::iterator it;
-
-		for(it = v.begin(); it != v.end(); it++)
-		{
-			cout << *it << endl;
-		}
-*/
 		for(int i = 0; i < 60; i++)
 		{
 			printf("-");
 		}
 		printf("\n");
 
+		int cnt = 0;
+
+		vector<string> ans[maxn];
 
 		//O(n^2)
-		for(int i = 0; i < l; i++)
+		for(int i = 0; i < k; i++)
 		{
-			for(int o = 0; o < k && i+o*l < n; o++)
+			for(int j = 0; j < l; j++)
 			{
-				cout << v[i+o*l];
-				if(o == k-1 || (i+(o+1)*l >= n))
-				{
-					for(int j = v[i+o*l].size(); j < max; j++)
-					{
-						printf(" ");
-					}
-				}
-				else
-				{
-					for(int j = v[i+o*l].size(); j < max+2; j++)
-					{
-						printf(" ");
-					}
-				}
+				ans[j].EB(v[cnt++]);
+				if(cnt >= n)
+					break;
 			}
-			printf("\n");
+				
+
+			if(cnt >= n)
+				break;
 		}
 
-
+		for(int i = 0; i < l; i++)
+		{
+			for(int j = 0; j < ans[i].size(); j++)
+			{
+				if(j < k-1)
+				{
+					cout << ans[i][j];
+					for(int o = ans[i][j].size()+1; o <= max+2; o++)
+						printf(" ");
+				}
+					
+				else
+				{
+					cout << ans[i][j];
+					for(int o = ans[i][j].size()+1; o <= max; o++)
+						printf(" ");
+				}
+					
+			}
+			cout << '\n';
+		}
 	}
 
 	return 0;

@@ -1,99 +1,84 @@
-#include <iostream>
-#include <cstdio>
-#include <vector>
-#include <queue>
-#include <string>
-#include <cstring>
-#include <cmath>
-#include <map>
-#include <cstdlib>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define ll long long
-#define C cases
 #define PB push_back
-#define PP pair<int, int>
-#define maxn 1500
+#define PII pair<int, int>
+#define MP make_pair
+#define all(x) x.begin(), x.end()
+#define REP(x, y, z) for(int x = (y); x <= (z); x++)
+#define REPP(x, y, z) for(int x = (y); x >= (z); x--)
+#define F first
+#define S second
+#define MSET(x, y) memset(x, y, sizeof(x)) 
+#define EB emplace_back
+#define maxn 1000+5
+
+//structure
+
+//declaration
+int n, m, tmp;
+string str;
+int cases;
+//functions
+map<int, int> mp;
 
 
 int main(void)
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	
-	#ifndef file
+	#ifdef DBG
 	freopen("in.in", "r", stdin);
 	freopen("out.out", "w", stdout);
 	#endif
 
-	int T;
-	int counter = 1;
+	cases = 1;
 
-	while(~scanf("%d", &T) && T)
+	while(~scanf("%d", &n) && n)
 	{
+		printf("Scenario #%d\n", cases++);
+		mp.clear();
+		queue<int> q[maxn];
+		queue<int> q_t;
 
-		//if(counter != 1)
-		//	printf("\n");
-
-		printf("Scenario #%d\n", counter++);
-
-		int n;
-		queue<int> q;
-		queue<int> qt[maxn];
-		map<int, int> m;
-
-		for(int k = 0; k < T; k++)
+		REP(i, 1, n)
 		{
-			scanf("%d", &n);
-
-			for(int i = 0; i < n; i++)
+			scanf("%d", &m);
+			REP(j, 1, m)
 			{
-				int tmp;
 				scanf("%d", &tmp);
-				m[tmp] = k;
+				mp[tmp] = i;
 			}
 		}
 
-		string type;
-
-		while(cin >> type)
+		while(cin >> str)
 		{
-			if(type[0] == 'S')
+			if(str[0] == 'S')
 				break;
-
-			else if(type[0] == 'D')
+			
+			if(str[0] == 'E')
 			{
-				int team = q.front();
-				printf("%d\n", qt[team].front());
-				qt[team].pop();
-				if(qt[team].empty())
+				scanf("%d", &tmp);
+
+				if(!q[mp[tmp]].size())
 				{
-					q.pop();
+					q_t.emplace(mp[tmp]);
 				}
+				q[mp[tmp]].emplace(tmp);
 			}
 
-			else if(type[0] == 'E')
+			if(str[0] == 'D')
 			{
-				int p;
-				scanf("%d", &p);
-				getchar();
+				tmp = q[q_t.front()].front();	q[q_t.front()].pop();
+				if(q[q_t.front()].size() == 0)
+					q_t.pop();
+				printf("%d\n", tmp);
 
-				int team = m[p];
-				if(qt[team].empty())
-				{
-					q.push(team);
-					qt[team].push(p);
-				}
-				else
-				{
-					qt[team].push(p);
-				}
 			}
 		}
 
-		printf("\n");
+		puts("");
 	}
 
 	return 0;
 }
+

@@ -1,125 +1,99 @@
-#include <iostream>
-#include <cstdio>
-#include <vector>
-#include <queue>
-#include <string>
-#include <cstring>
-#include <cmath>
-#include <cstdlib>
-#include <set>
-#include <map>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define ll long long
-#define C cases
 #define PB push_back
-#define PP pair<int, int>
+#define PII pair<int, int>
+#define MP make_pair
+#define all(x) x.begin(), x.end()
+#define REP(x, y, z) for(int x = (y); x <= (z); x++)
+#define REPP(x, y, z) for(int x = (y); x >= (z); x--)
+#define F first
+#define S second
+#define MSET(x, y) memset(x, y, sizeof(x)) 
+#define EB emplace_back
 #define maxn 10000+5
-#define maxm 10+5
 
-string s[maxn][maxm];
+//structure
+
+//declaration
+int n, m, k, cnt;
+string str;
+string hold[maxn][15];
+map<string, int> mp;
+//functions
 
 int main(void)
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	
-	#ifndef file
+	#ifdef DBG
 	freopen("in.in", "r", stdin);
 	freopen("out.out", "w", stdout);
 	#endif
 
-	int col, row;
-
-	while(~scanf("%d %d", &row, &col))
+	while(~scanf("%d %d\n", &n, &m))
 	{
-		set<int> st;
-		map<int,int> m;
-		map<int,vector<int> > m2;
-		getchar();
-		for(int i = 0; i < row; i++)
-		{
-			string tmp;
-			getline(cin, tmp);
-			int cur = 0, next;
-			for(int j = 0; j < col; j++)
-			{
-				next = tmp.find_first_of(",", cur);
-				s[i][j] = tmp.substr(cur, next-cur);
-				cur = next+1;
-			}
-		}
+		mp.clear();
+		cnt = 0;
 
-		//test
-		/*
-		for(int i = 0; i < row; i++)
+		REP(i, 1, n)
 		{
-			for(int j = 0; j < col; j++)
-			{
-				cout << s[i][j] << '|';
-			}
-			cout << endl;
-		}
-		*/
+			getline(cin, str);
 
-		bool check = false;
-		
-		for(int j = 0; j < row; j++)
-		{
-			for(int k = j+1; k < row; k++)
+			string tmp = "";
+			k = 0;
+			REP(j, 0, str.size()-1)
 			{
-				for(int i = 0; i < col; i++)
+				if(str[j] == ',')
 				{
-					//cout << s[j][i] << "  " << s[k][i] << endl;
-					if(s[j][i] == s[k][i])
+					hold[i][k++] = tmp;
+					mp[tmp] = cnt++;
+					tmp = "";
+				}
+
+				else
+					tmp += str[j];
+			}
+
+			hold[i][k++] = tmp;
+			mp[tmp] = cnt++;
+		}
+
+		bool flag = false;
+
+		REP(i, 0, m-1)
+		{
+			REP(j, i+1, m-1)
+			{
+				map<PII, int> ck;
+				REP(l, 1, n)
+				{
+					PII ss = MP(mp[hold[l][i]], mp[hold[l][j]]);
+
+					if(!ck[ss])
 					{
-						int hold = j*10000+k;
-						//cout << st.count(hold) << endl;
-						
-						if(st.count(hold))
-						{
-							//m[hold]++;
-							check = true;
-							
-							printf("NO\n");
-							printf("%d %d\n", hold/10000+1, hold%10000+1);
-							printf("%d %d\n", m[hold]+1, i+1);
-							
-							break;
-							//m2[hold].PB(i);
-						}
-						else
-						{
-							st.insert(hold);
-							m[hold] = i;
-							//m2[hold].PB(i);
-						}
+						ck[ss] = l;
+					}
+
+					else
+					{
+						flag = true;
+						printf("NO\n");
+						printf("%d %d\n", ck[ss], l);
+						printf("%d %d\n", i+1, j+1);
+						break;
 					}
 				}
-				if(check)
+
+				if(flag)
 					break;
 			}
-			if(check)
+			if(flag)
 				break;
 		}
 
-/*
-		set<int>::iterator it;
-		for(it = st.begin(); it != st.end(); it++)
-		{
-			if(m[*it] == 2)
-			{
-				check = true;
-				cout << "NO\n";
-				cout << *it/10000+1 << ' ' << *it%10000+1 << endl;
-				cout << m2[*it][0]+1 << ' ' << m2[*it][1]+1 << endl;
-				break;
-			}
-		}
-*/
-		if(!check)
-			cout << "YES\n";
+		if(!flag)
+			printf("YES\n");
 	}
+
 	return 0;
 }

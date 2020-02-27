@@ -6,32 +6,26 @@ using namespace std;
 #define PII pair<int, int>
 #define MP make_pair
 #define all(x) x.begin(), x.end()
-#define REP(x, y, z) for(int x = y; x <= z; x++)
-#define REPP(x, y, z) for(int x = y; x >= z; x--)
+#define REP(x, y, z) for(int x = (y); x <= (z); x++)
+#define REPP(x, y, z) for(int x = (y); x >= (z); x--)
 #define F first
 #define S second
 #define MSET(x, y) memset(x, y, sizeof(x)) 
-#define maxn 100+5
-#define M 100+5
+#define EB emplace_back
+#define maxn 1005
+#define M 1005
+#define IOS 
 
 //structure
-
-//declaration
-int T, n, m, k;
-string type[maxn];
-pair<string, string> tools[maxn];
-pair<string, string> tran[maxn];
-bool floyd[4*maxn][4*maxn];
-map<string, int> mp;
-//functions
 struct Edge{
     int t,r,opp,next; // t=邊的終點，r=剩餘流量, opp=反向邊編號, next=下一條邊編號(鍊表)
     Edge () {}
     Edge (int a,int b,int c,int d) { t=a; r=b; opp=c; next=d; }
 }in[M*25];
-int e,st,ed; // 當前邊標號, 源點, 匯點
-int first[M],arc[M],dis[M], gap[M*2]; // arc: bfs完以後，每個點找剩餘流找到哪條邊的標記
+int e,st,ed, n, m; // 當前邊標號, 源點, 匯點
+int first[M],arc[M],dis[M]; // arc: bfs完以後，每個點找剩餘流找到哪條邊的標記
 void add(int x,int y,int z) { // 加一條 x->y， 流量 z 的邊
+    cout << x << ' ' << y << ' ' << z << '\n';
     in[e] = Edge(y,z,e+1,first[x]);
     first[x] = e++;
     in[e] = Edge(x,0,e-1,first[y]);
@@ -44,6 +38,7 @@ void init() {
 }
 bool bfs() {
     int cur;
+    n = m;
     queue<int> q;
     REP(i,0,n) dis[i] = 0;
     REP(i,0,n) arc[i] = first[i];
@@ -51,7 +46,6 @@ bool bfs() {
     q.push(ed);
 
     while (!q.empty()) {
-        cout << cur << endl;
         cur = q.front();
         q.pop();
         for (int i=first[cur]; ~i; i=in[i].next)
@@ -76,18 +70,24 @@ int dfs(int cur,int flow) {
         }
     return re;
 }
-
 int maxflow() {
     int res = 0;
     while(bfs()) 
     {
-        int tmp = dfs(st, 1e9);
-        cout << tmp << endl;
-        res += tmp;
-       // cout << res << endl;
+        res += dfs(st, 2000000000);
+        cout << res << endl;
     }
+    
     return res;
 }
+//declaration
+int T, q, cases, cnt;
+string str;
+string str1;
+int device[maxn];
+string type[maxn];
+map<string, int> mp;
+//functions
 
 int main(void)
 {
@@ -96,91 +96,51 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-    scanf("%d", &T);
+    cin >> T;
+
+    st = 0;
+    ed = 1;
+    cases = 0;
 
     while(T--)
     {
-        MSET(floyd, false);
-        scanf("%d\n", &n);
-        int cnt = 0;
+        if(cases++)
+            cout << '\n';
+        cin >> n;
 
-        REP(i, 1, n)
+        init();
+        mp.clear();
+
+        cnt = 2;
+
+        for(int i = 1; i <= n; i++)
         {
             cin >> type[i];
-
-            if(!mp.count(type[i]))
-                mp[type[i]] = cnt++;
+            mp[type[i]] = cnt++;
+            add(cnt-1, 1, 1);
         }
 
-        scanf("%d\n", &m);
+        cin >> m;
+
         REP(i, 1, m)
         {
-            cin >> tools[i].F >> tools[i].S;
-
-            if(!mp.count(tools[i].S))
-                mp[tools[i].S] = cnt++;
+            cin >> str >> str1;
+            if(!mp[str1])   mp[str1] = cnt++;
+            device[i] = mp[str1];
+            add(0, device[i], 1);         
         }
 
-        scanf("%d\n", &k);
+        cin >> q;
 
-        REP(i, 1, k)
+        REP(i, 1, q)
         {
-            cin >> tran[i].F >> tran[i].S;
-
-            if(!mp.count(tran[i].F))
-                mp[tran[i].F] = cnt++;
-            if(!mp.count(tran[i].S))
-                mp[tran[i].S] = cnt++;
-
-            floyd[mp[tran[i].F]][mp[tran[i].S]] = true;
+            cin >> str >> str1;
+            if(!mp[str])   mp[str] = cnt++;
+            if(!mp[str1])   mp[str1] = cnt++;
+            add(mp[str], mp[str1], 1);
         }
-
-        //  floyd warshell algorithm
-
-        REP(i, 0, cnt-1)
-            floyd[i][i] = true;
-
-        REP(l, 0, cnt-1)
-            REP(i, 0, cnt-1)
-                REP(j, 0, cnt-1)
-                    floyd[i][j] |= floyd[i][l] && floyd[l][j];
-
-        REP(i, 0, cnt-1)
-        {
-            REP(j, 0, cnt-1)
-                cout << floyd[i][j] << ' ';
-            cout << endl;
-        }
-        init();
-
-        for(int i = 1; i <= m; i++) 
-        {
-            cout << cnt <<  ' ' << mp[tools[i].S] << endl;
-            add(cnt, mp[tools[i].S], 1);
-        }
-        cout << endl;
-        for(int i = 1; i <= n; i++) 
-        {
-            cout << mp[type[i]] << ' ' << cnt+1 << endl;
-            add(mp[type[i]], cnt+1, 1);
-        }
-        cout << endl;
-
-        for(int i = 1; i <= m; i++) 
-        {
-            for(int j = 1; j <= n; j++) 
-            {
-                if(!floyd[mp[tools[i].S]][mp[type[j]]]) continue;
-                cout << mp[tools[i].S] << ' ' << mp[type[j]] << endl;
-                add(mp[tools[i].S], mp[type[j]], 1);
-            }
-        }
-
-
-        st = cnt;
-        ed = cnt+1;
-        cout << m-maxflow() << endl;
+        
+        cout << m-maxflow() << '\n';
     }
-
 	return 0;
 }

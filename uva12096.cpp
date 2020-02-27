@@ -1,111 +1,102 @@
-#include <iostream>
-#include <cstdio>
-#include <vector>
-#include <queue>
-#include <string>
-#include <cstring>
-#include <cmath>
-#include <map>
-#include <set>
-#include <stack>
-#include <cstdlib>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define ll long long
-#define C cases
 #define PB push_back
-#define PP pair<int, int>
+#define PII pair<int, int>
+#define MP make_pair
+#define all(x) x.begin(), x.end()
+#define REP(x, y, z) for(int x = (y); x <= (z); x++)
+#define REPP(x, y, z) for(int x = (y); x >= (z); x--)
+#define F first
+#define S second
+#define MSET(x, y) memset(x, y, sizeof(x)) 
+#define EB emplace_back
+#define maxn
 
-/*
-PUSH:裝一個空集合進去stack
-DUP:複製stack 最頂端的set再push進去stack
-UNION:拿stack最頂端兩個set做聯集再push進去stack
-INTERSERT:拿stack最頂端兩個set做交集再push進去stack
-ADD:將stack最頂端的set拿出來後insert進去stack最頂端的set
-*/
+//structure
 
-set<string> s;
-map<int, set<string> > m;
-stack<int> st;
-int k;
+//declaration
+int T;
+int n, id;
+string str;
+map<set<int> , int> mp;
+vector<set<int> > v;
 
-
-void PUSH(void)
+//functions
+int findId(set<int> a)
 {
-	st.push(0);
-}
-
-void DUP(void)
-{
-	st.push(st.top());
-}
-
-void UNION(void)
-{
-	int tmp1, tmp2;
-	tmp1 = st.top();
-	st.pop();
-	tmp2 = st.top();
-	st.pop();
-}
-
-void INTERSERT(void)
-{
-	int tmp1, tmp2;
-	tmp1 = st.top();
-	st.pop();
-	tmp2 = st.top();
-	st.pop();
-
-	
-}
-
-void ADD(void)
-{
-	int tmp = st.top();
-	st.pop();
-	int now = st.top();
-	st.pop();
-
-	set<string> ss;
-	s = m[now];
-	ss = m[tmp];
-	for(set<string>::iterator it = ss.begin(); it != ss.end(); it++)
+	if(mp[a])
+		return mp[a];
+	else
 	{
-		ss.insert(*it);
+		mp[a] = id++;
+		v.EB(a);
+		return mp[a];
 	}
-
-	m[k++] = ss;
-	st.push(k-1);
 }
 
 int main(void)
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	
-	#ifndef file
+	#ifdef DBG
 	freopen("in.in", "r", stdin);
 	freopen("out.out", "w", stdout);
 	#endif
 
-	s.insert("{}");
-	m[0] = s;
-
-	int T;
 	scanf("%d", &T);
 
 	while(T--)
 	{
-		int n;
-
+		v.clear();
+		mp.clear();
+		stack<int> St;
+		id = 0;
 		scanf("%d", &n);
 
 		while(n--)
 		{
-			k = 1;
+			cin >> str;
+			// cout << str << endl;
+
+			if(str[0] == 'P')
+			{
+				set<int> hold;
+				St.push(findId(hold));
+			}
+
+			else if(str[0] == 'D')
+			{
+				St.push(St.top());
+			}
+
+			else
+			{
+				set<int> A = v[St.top()]; St.pop();
+				set<int> B = v[St.top()]; St.pop();
+				set<int> tmp;
+
+				if(str[0] == 'A')
+				{
+					tmp = B;
+					tmp.insert(findId(A));
+					St.push(findId(tmp));
+				}
+
+				if(str[0] == 'U')
+				{
+					set_union(all(A), all(B), inserter(tmp, tmp.begin()));
+					St.push(findId(tmp));
+				}
+
+				if(str[0] == 'I')
+				{
+					set_intersection(all(A), all(B), inserter(tmp, tmp.begin()));
+					St.push(findId(tmp));
+				}
+			}
+			printf("%d\n", v[St.top()].size());
 		}
+		puts("***");
 	}
 
 	return 0;
