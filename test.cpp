@@ -12,15 +12,15 @@ using namespace std;
 #define S second
 #define MSET(x, y) memset(x, y, sizeof(x)) 
 #define EB emplace_back
-#define maxn 100000
+#define maxn
 #define IOS ios::sync_with_stdio(false); cin.tie(0);
 
 //structure
 
 //declaration
-int n;
-char c;
-int st[maxn];
+int cases;
+string str;
+
 //functions
 
 int main(void)
@@ -32,76 +32,73 @@ int main(void)
 
 	IOS;
 
-	while(cin >> n)
+	cin >> cases;
+	getline(cin, str);
+	while(cases--)
 	{
-		bool ans = false;
-		int total = 0, dep = 0;
-		// stack<int> st;
-		string num;
-		bool flag = false;
-		char c1, c2, c3;
+		getline(cin, str);
+		stack<char> ss;
 
-		while(cin >> c)
+		bool flag = true;
+
+		for(auto i : str)
 		{
-			if(c == ' ' || c == '\n')
-				continue;
-			
-			if(c >= '0' && c <= '9' || c == '-')
+			if(i == '(' || i == '[' || i == '{')
 			{
-				flag = true;
-				num += c;
+				ss.push(i);
 			}
 
-			if(c == '(')
+			else
 			{
-				if(flag)
+				if(ss.empty())
 				{
-					// st.push(stoi(num));
-					// total += st.top();
-					st[dep] = stoi(num);
-
-					num = "";
-					// cout << "IN: " << st.top() << ' ' << total << '\n';
 					flag = false;
+					break;
 				}
-				dep++;
-			}
 
-			if(c == ')')
-			{
-				dep--;
-				if(c1 == '(' && c2 == ')' && c3 == '(')
+				if(i == ')')
 				{
-					total = 0;
-					REP(i, 1, dep)
-						total += st[i];
-					if(total == n)
-						ans = true;
-					// total -= st.top();
-					// st.pop();
+					if(ss.top() == '(')
+						ss.pop();
+					else
+					{
+						flag = false;
+						break;
+					}
 				}
-				else if(c2 == '(' && c3 == ')')
+
+				if(i == '}')
 				{
-					// total -= st.top();
-					// st.pop();
+					if(ss.top() == '{')
+						ss.pop();
+					else
+					{
+						flag = false;
+						break;
+					}
+				}
+
+				if(i == ']')
+				{
+					if(ss.top() == '[')
+						ss.pop();
+					else
+					{
+						flag = false;
+						break;
+					}
 				}
 			}
-				
-
-			c1 = c2;
-			c2 = c3;
-			c3 = c;
-
-			if(dep == 0)
-				break;
 		}
 
-		if(ans)
-			cout << "yes\n";
-		else
-			cout << "no\n";
+		if(!ss.empty())
+			flag = false;
+		
+		if(flag)
+			cout << "Yes\n";
+		if(!flag)
+			cout << "No\n";
 	}
-	
 
 	return 0;
 }
