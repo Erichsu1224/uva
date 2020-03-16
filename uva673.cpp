@@ -1,81 +1,103 @@
-#include <iostream>
-#include <cstdio>
-#include <stack>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define ll long long
-#define C cases
-#define pb push_back
+#define PB push_back
+#define PII pair<int, int>
+#define MP make_pair
+#define all(x) x.begin(), x.end()
+#define REP(x, y, z) for(int x = (y); x <= (z); x++)
+#define REPP(x, y, z) for(int x = (y); x >= (z); x--)
+#define F first
+#define S second
+#define MSET(x, y) memset(x, y, sizeof(x)) 
+#define EB emplace_back
+#define maxn
+#define IOS ios::sync_with_stdio(false); cin.tie(0);
 
+//structure
+
+//declaration
+int cases;
+string str;
+
+//functions
 
 int main(void)
 {
-	#ifndef file
+	#ifdef DBG
 	freopen("in.in", "r", stdin);
 	freopen("out.out", "w", stdout);
 	#endif
 
-	int C;
+	IOS;
 
-	scanf("%d", &C);
-	getchar();
-
-	while(C--)
+	cin >> cases;
+	getline(cin, str);
+	while(cases--)
 	{
-		string str;
-		stack<char> st;
-		bool check = true;
+		getline(cin, str);
+		stack<char> ss;
 
-		getline(cin , str);
+		bool flag = true;
 
-		if(str == "\n")
+		for(auto i : str)
 		{
-			printf("Yes\n");
-			continue;
-		}
-
-		for(int i = 0; i < str.size(); i++)
-		{
-			if(str[i] == '(' || str[i] == '[')
-				st.push(str[i]);
-
-			else if(str[i] == ')')
+			if(i == '(' || i == '[' || i == '{')
 			{
-				if(!st.empty() && st.top() == '(')
-				{
-					st.pop();
-					continue;
-				}
-
-				else
-				{
-					check = false;
-					break;
-				}
+				ss.push(i);
 			}
 
-			else if(str[i] == ']')
+			else
 			{
-				if(!st.empty() && st.top() == '[')
+				if(ss.empty())
 				{
-					st.pop();
-					continue;
+					flag = false;
+					break;
 				}
 
-				else
+				if(i == ')')
 				{
-					check = false;
-					break;
+					if(ss.top() == '(')
+						ss.pop();
+					else
+					{
+						flag = false;
+						break;
+					}
+				}
+
+				if(i == '}')
+				{
+					if(ss.top() == '{')
+						ss.pop();
+					else
+					{
+						flag = false;
+						break;
+					}
+				}
+
+				if(i == ']')
+				{
+					if(ss.top() == '[')
+						ss.pop();
+					else
+					{
+						flag = false;
+						break;
+					}
 				}
 			}
 		}
-		if(!st.empty())
-			check = false;
 
-		if(check)
-			printf("Yes\n");
-		if(!check)
-			printf("No\n");
+		if(!ss.empty())
+			flag = false;
+		
+		if(flag)
+			cout << "Yes\n";
+		if(!flag)
+			cout << "No\n";
 	}
 
 	return 0;
