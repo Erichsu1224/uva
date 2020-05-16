@@ -13,15 +13,12 @@ using namespace std;
 #define MSET(x, y) memset(x, y, sizeof(x)) 
 #define EB emplace_back
 #define maxn
-#define IOS 
+#define IOS ios::sync_with_stdio(false); cin.tie(0);
 
 //structure
-struct Edge
-{
-    int v, rf, re;
-}
+
 //declaration
-int n, s, t, level[maxn], now[maxn];
+
 //functions
 
 int main(void)
@@ -31,7 +28,9 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
+	IOS;
 
+	
 
 	return 0;
 }

@@ -13,15 +13,12 @@ using namespace std;
 #define MSET(x, y) memset(x, y, sizeof(x)) 
 #define EB emplace_back
 #define maxn
-#define IOS 
+#define IOS ios::sync_with_stdio(false); cin.tie(0);
 
 //structure
-struct Edge
-{
-    int v, rf, re;
-}
+
 //declaration
-int n, s, t, level[maxn], now[maxn];
+
 //functions
 
 int main(void)
@@ -31,7 +28,28 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
+	IOS;
 
+	string str, x, y;
+	
+	while(cin >> str)
+	{
+		set<string> ss;
+
+		REP(i, 0, str.size()-1)
+		{
+			REP(j, 1, str.size())
+			{
+				x = y = str.substr(i, j);
+				reverse(all(y));
+				if(x == y)
+					ss.emplace(x);
+			}
+		}
+		cout << "The string '" << str << "' contains " << ss.size() << " palindromes.\n";
+	}
+
+	
 
 	return 0;
 }

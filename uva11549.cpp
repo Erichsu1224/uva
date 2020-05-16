@@ -18,7 +18,9 @@ using namespace std;
 //structure
 
 //declaration
-
+int cases;
+string in;
+ll n, d;
 //functions
 
 int main(void)
@@ -30,7 +32,40 @@ int main(void)
 
 	IOS;
 
-	
-	cout << 'HIHI\n';
+	cin >> cases;
+
+    while(cases--)
+    {
+        map<string, int> mp;
+        ll ans = 0;
+        cin >> n >> in;
+
+        while(true)
+        {
+            // cout << in << endl;
+            string tmp = "";
+
+            for(int i = 0; i < in.size() && i < n; i++)
+                tmp += in[i];
+            
+            // cout << tmp << endl;
+
+            d = stoi(tmp);
+
+            ans = max(ans, d);
+
+            d = d*d;
+
+            in = to_string(d);
+
+            if(mp[in])
+                break;
+
+            mp[in]++;
+        }
+
+        cout << ans << '\n';
+    }
+
 	return 0;
 }

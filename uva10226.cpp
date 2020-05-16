@@ -13,15 +13,12 @@ using namespace std;
 #define MSET(x, y) memset(x, y, sizeof(x)) 
 #define EB emplace_back
 #define maxn
-#define IOS 
+#define IOS ios::sync_with_stdio(false); cin.tie(0);
 
 //structure
-struct Edge
-{
-    int v, rf, re;
-}
+
 //declaration
-int n, s, t, level[maxn], now[maxn];
+
 //functions
 
 int main(void)
@@ -31,7 +28,40 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
+	// IOS;
 
+	int n, total;
+	string str;
+
+	while(cin >> n)
+	{
+		getline(cin, str);
+		getline(cin, str);
+
+		REP(i, 1, n)
+		{
+			if(i > 1)
+				cout << '\n';
+			map<string, int> mp;
+			total = 0;
+
+			while(getline(cin, str))
+			{
+				if(str == "")
+					break;
+
+				mp[str]++;
+				total++;
+			}
+
+			for(auto i : mp)
+			{
+				cout << i.F;
+				printf(" %.4f\n", float(i.S)/total*100);
+			}
+		}
+			
+	}
 
 	return 0;
 }
