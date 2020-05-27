@@ -14,13 +14,13 @@ using namespace std;
 #define EB emplace_back
 #define maxn
 #define IOS ios::sync_with_stdio(false); cin.tie(0);
+#define pi 2.0*acos(0.0)
 
 //structure
 
 //declaration
-string code = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
+double n, a, b, c;
 //functions
-map<char, char> mp;
 
 int main(void)
 {
@@ -29,20 +29,12 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-	IOS;
-
-	for(int i = 2; i < code.size(); i++){
-		mp[code[i]] = code[i-2];
-	}
-	mp[' '] = ' ';
-
-	string str;
-
-	while(getline(cin, str)){
-		for(int i = 0; i < str.size(); i++)
-			cout << mp[str[i]];
-		cout << '\n';
-	}
+	while(cin >> n){
+        c = n*n-(n*n*pi/6.0)-(n*(n/2*sqrt(3.0))/2.0);
+        b = n*n-(n*n*pi/4.0)-2.0*c;
+        a = n*n-4.0*b-4.0*c;
+        printf("%.3llf %.3llf %.3llf\n", a, 4.0*b, 4.0*c);
+    }
 
 	return 0;
 }

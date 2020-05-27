@@ -18,9 +18,8 @@ using namespace std;
 //structure
 
 //declaration
-string code = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
+
 //functions
-map<char, char> mp;
 
 int main(void)
 {
@@ -31,18 +30,33 @@ int main(void)
 
 	IOS;
 
-	for(int i = 2; i < code.size(); i++){
-		mp[code[i]] = code[i-2];
-	}
-	mp[' '] = ' ';
+    int n;
 
-	string str;
+    while(cin >> n){
+        int now, x;
+        bool flag = true;
+        map<int, int> mp;
 
-	while(getline(cin, str)){
-		for(int i = 0; i < str.size(); i++)
-			cout << mp[str[i]];
-		cout << '\n';
-	}
+        REP(i, 1, n){
+            if(i == 1){
+                cin >> now;
+                continue;
+            }
+
+            cin >> x;
+            if(abs(x-now) >= n || mp[abs(x-now)]){
+                flag = false;
+            }
+
+            mp[abs(x-now)] = 1;
+            now = x;
+        }
+
+        if(!flag)
+            cout << "Not jolly\n";
+        else
+            cout << "Jolly\n";
+    }
 
 	return 0;
 }

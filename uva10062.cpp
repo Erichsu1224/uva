@@ -18,9 +18,17 @@ using namespace std;
 //structure
 
 //declaration
-string code = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
+
 //functions
-map<char, char> mp;
+bool cmp(pair<char, int> a, pair<char, int> b){
+    if(a.S == b.S){
+        return a.F > b.F;
+    }
+
+    else{
+        return a.S < b.S;
+    }
+}
 
 int main(void)
 {
@@ -31,18 +39,30 @@ int main(void)
 
 	IOS;
 
-	for(int i = 2; i < code.size(); i++){
-		mp[code[i]] = code[i-2];
-	}
-	mp[' '] = ' ';
+    string str;
+    int T = 0;
 
-	string str;
+    while(getline(cin, str)){
+        map<char, int> mp;
+        vector<pair<char, int>> v;
 
-	while(getline(cin, str)){
-		for(int i = 0; i < str.size(); i++)
-			cout << mp[str[i]];
-		cout << '\n';
-	}
+        for(int i = 0; i < str.size(); i++){
+            mp[str[i]]++;
+        }
+
+        for(auto i : mp){
+            v.EB(MP(i.F, i.S));
+        }
+
+        sort(all(v), cmp);
+
+
+        if(T++)
+            cout << '\n';
+        for(auto i : v){
+            cout << int(i.F) << ' ' << i.S << '\n';
+        }
+    }
 
 	return 0;
 }

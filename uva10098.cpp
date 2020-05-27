@@ -12,15 +12,14 @@ using namespace std;
 #define S second
 #define MSET(x, y) memset(x, y, sizeof(x)) 
 #define EB emplace_back
-#define maxn
+#define maxn 10+5
 #define IOS ios::sync_with_stdio(false); cin.tie(0);
 
 //structure
 
 //declaration
-string code = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
+int n;
 //functions
-map<char, char> mp;
 
 int main(void)
 {
@@ -29,20 +28,22 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-	IOS;
 
-	for(int i = 2; i < code.size(); i++){
-		mp[code[i]] = code[i-2];
-	}
-	mp[' '] = ' ';
+	cin >> n;
 
-	string str;
+    while(n--)
+    {
+        char str[maxn];
 
-	while(getline(cin, str)){
-		for(int i = 0; i < str.size(); i++)
-			cout << mp[str[i]];
-		cout << '\n';
-	}
+        scanf("%s", str);
+
+        sort(str, str+strlen(str));
+
+        do{
+            printf("%s\n", str);
+        }   while(next_permutation(str, str+strlen(str)));
+        puts("");
+    }
 
 	return 0;
 }
