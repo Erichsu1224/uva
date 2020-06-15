@@ -12,89 +12,13 @@ using namespace std;
 #define S second
 #define MSET(x, y) memset(x, y, sizeof(x)) 
 #define EB emplace_back
-#define maxn 20
-#define IOS ios::sync_with_stdio(false); cin.tie(0);
+#define maxn
 
 //structure
 
 //declaration
-int cases, n, m;
-int x, y, cnt;
-vector<int> g[maxn];
-vector<PII> edges;
-vector<int> e[maxn];
-bool vis[maxn];
+
 //functions
-
-void dfs(int n)
-{
-    vis[n] = true;
-
-    for(auto i : g[n])
-        if(!vis[i])
-            dfs(i);
-}
-
-void dfs2(int n)
-{
-    vis[n] = true;
-
-    for(auto i : e[n])
-        if(!vis[i])
-            dfs(i);
-        else
-           cnt++; 
-}
-
-bool connected(void){
-    MSET(vis, false);
-    
-    dfs(1);
-
-    bool flag = true;
-
-    REP(i, 1, n)
-        if(!vis[i]){
-            flag = false;
-            break;
-        }
-
-    if(flag)
-        return true;
-    else
-        return false;
-}
-
-bool cycle(void){
-    for(int i = 0; i < 1<<m; i++){
-        for(int j = 0; j <= n; j++)
-			e[j].clear();
-
-        int st = 0;
-
-        for(int j = 0; j <= m; j++){
-            if(m&&1<<j){
-                e[edges[j].F].EB(edges[j].S);
-                e[edges[j].S].EB(edges[j].F);
-                st = edges[j].F;
-            }
-        }
-
-        MSET(vis, false);
-        cnt = 0;
-
-        dfs2(st);
-
-        if(cnt > 2)
-            break;
-    }
-
-    if(cnt > 2)
-        return true;
-    else
-        return false;
-}
-
 
 int main(void)
 {
@@ -103,31 +27,28 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-	IOS;
+    string str;
 
-	cin >> cases;
+    while(getline(cin, str)){
+        stringstream ss(str);
+        int x;
+        map<int, int> mp;
+        vector<pair<int, int>> v;
+        int cnt = 1;
 
-    while(cases--){
+        while(ss >> x){
+            if(!mp[x]){
+                mp[x] = cnt++;
+                v.emplace_back(MP(x, 1));
+            } 
 
-        for(int i = 0; i < maxn; i++)
-            g[i].clear();
-        edges.clear();
-
-        cin >> n >> m;
-
-        REP(i, 1, m){
-            cin >> x >> y;
-            g[x].EB(y);
-            g[y].EB(x);
-            edges.EB(MP(x, y));
+            else
+                v[mp[x]-1].S++;
         }
 
-        if(!connected() || m <= n)
-            cout << "n\n";
-        else if(cycle() || m > n+1)
-            cout << "y: there are at least three cycles\n";
-        else
-            cout << "y\n";
+        for(auto i : v){
+            printf("%d %d\n", i.F, i.S);
+        }
     }
 
 	return 0;
