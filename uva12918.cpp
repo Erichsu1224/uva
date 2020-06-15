@@ -18,9 +18,12 @@ using namespace std;
 //structure
 
 //declaration
-
+int T;
+ll n, m;
 //functions
-
+ll solve(ll a, ll b){
+    return (b + b - a - 1) * a / 2;
+}
 int main(void)
 {
 	#ifdef DBG
@@ -28,7 +31,12 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-	
+	scanf("%d", &T);
 
+    while(T--){
+        scanf("%lld %lld", &n, &m);
+        printf("%lld\n", solve(n, m));
+    }
+    
 	return 0;
 }

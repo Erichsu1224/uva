@@ -20,6 +20,15 @@ using namespace std;
 //declaration
 
 //functions
+ll poww(ll x, ll y){
+    if (y == 0) 
+        return 1;
+    ll tmp = poww(x, y/2);
+    if (y%2)
+        return x * tmp * tmp;
+    else
+        return tmp * tmp;
+}
 
 int main(void)
 {
@@ -28,7 +37,27 @@ int main(void)
 	freopen("out.out", "w", stdout);
 	#endif
 
-	
+	string str;
+    ll n;
+    ll x;
+
+    while(~scanf("%lld\n", &n)){
+        vector<ll> v;
+
+        getline(cin, str);
+        stringstream ss(str);
+
+        while(ss >> x){
+            v.EB(x);
+        }
+        ll ans = 0;
+
+        for(int i = 0; i < v.size()-1; i++){
+            ans += (v.size()-i-1)*v[i]*poww(n, v.size()-i-2);
+        }
+
+        cout << ans << '\n';
+    }
 
 	return 0;
 }
