@@ -10,5 +10,6 @@
         "utility": "cpp",
         "ios": "cpp"
     },
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "Disabled",
+    "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace, powerline"
 }
