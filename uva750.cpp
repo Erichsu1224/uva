@@ -1,72 +1,41 @@
-#include <iostream>
-#include <cstdio>
-#include <vector>
-#include <algorithm>
-#include <cstring>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define ll long long
-#define C cases
-#define pb push_back
-#define N 8
+#define PB push_back
+#define PII pair<int, int>
+#define MP make_pair
+#define all(x) x.begin(), x.end()
+#define REP(x, y, z) for(int x = (y); x <= (z); x++)
+#define REPP(x, y, z) for(int x = (y); x >= (z); x--)
+#define F first
+#define S second
+#define MSET(x, y) memset(x, y, sizeof(x)) 
+#define EB emplace_back
+#define maxn 10
+#define IOS ios::sync_with_stdio(false); cin.tie(0);
 
-int queen[N], counter;
-bool mx[N];
-bool s1[15];
-bool s2[15];
+//structure
 
-void init(int row, int col)
-{
-	memset(queen, -1, sizeof(queen));
-	memset(mx, true, sizeof(mx));
-	memset(s1, true, sizeof(s1));
-	memset(s2, true, sizeof(s2));
-	counter = 0;
+//declaration
+int fig[maxn][maxn];
+//functions
 
-	row--;
-	col--;
-	queen[col] = row;
-	s1[row+col] = false;
-	s2[row-col+7] = false;
-	mx[row] = false;
-
-	backtracking(0, 0); 
-
-}
-
-void backtracking(int row, int col)
-{
-	if(row == N)
-	{
-		printf("%2d     ", ++kind);
-        for (int i = 0; i < N; i++)
-            printf(" %d", ans[i] + 1);
-        printf("\n");
-        return;
-    }
-
-    
-}
 
 
 int main(void)
 {
-	#ifndef file
-	freopen("in.in", "r", stdin);
-	freopen("out.out", "w", stdout);
-	#endif
+	int T;
+	cin >> T;
 
-	int C;
-
-	scanf("%d", &C);
-
-	for(int l = 0; l < C; l++)
-	{
+	while(T--){
 		int x, y;
+		cin >> x >> y;
+		// memset(fig, 0, sizeof(fig));
 
-		scanf("%d %d", &x, &y);
+		
+		dfs(x, y);
 
-		init(x, y);
 	}
 
 	return 0;
