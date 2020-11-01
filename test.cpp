@@ -1,55 +1,84 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define PB push_back
-#define PII pair<int, int>
-#define MP make_pair
-#define all(x) x.begin(), x.end()
-#define REP(x, y, z) for(int x = (y); x <= (z); x++)
-#define REPP(x, y, z) for(int x = (y); x >= (z); x--)
-#define F first
-#define S second
-#define MSET(x, y) memset(x, y, sizeof(x)) 
-#define EB emplace_back
-#define maxn
+#define maxn 250+5
 
-//structure
+char fig[maxn][maxn];
 
-//declaration
+int main(void){
+	int n, m;
+	int x, x_, y, y_;
+	string name;
+	char type, tmp;
 
-//functions
+	string str;
 
-int main(void)
-{
-	#ifdef DBG
-	freopen("in.in", "r", stdin);
-	freopen("out.out", "w", stdout);
-	#endif
+	while(getline(cin, str)){
+		stringstream ss(str);
 
-    string str;
+		ss >> type;
 
-    while(getline(cin, str)){
-        stringstream ss(str);
-        int x;
-        map<int, int> mp;
-        vector<pair<int, int>> v;
-        int cnt = 1;
+		if(type == 'X')
+			break;
+		if(type == 'I'){
+			ss >> n >> m;
+			for(int i = 1; i <= m; i++){
+				for(int j = 1; j <= n; j++)
+					fig[i][j] = 'O';
+			}
+		}
+		if(type == 'C'){
+			for(int i = 1; i <= m; i++){
+				for(int j = 1; j <= n; j++)
+					fig[i][j] = 'O';
+			}
+		}
+		if(type == 'L'){
+			ss >> x >> y >> tmp;
+			fig[x][y] = tmp;
+		}
+		if(type == 'V'){
+			ss >> x >> y >> y_ >> tmp;
 
-        while(ss >> x){
-            if(!mp[x]){
-                mp[x] = cnt++;
-                v.emplace_back(MP(x, 1));
-            } 
+			for(int i = min(y, y_); i <= max(y, y_); i++)
+				fig[i][x] = tmp;
+		}
+		if(type == 'H'){
+			ss >> x >> x_ >> y >> tmp;
 
-            else
-                v[mp[x]-1].S++;
-        }
+			for(int i = min(x, x_); i <= max(x, x_); i++)
+				fig[y][i] = tmp;
+		}
+		if(type == 'K'){
+			ss >> x >> x_ >> y >> y_ >> tmp;
 
-        for(auto i : v){
-            printf("%d %d\n", i.F, i.S);
-        }
-    }
+			for(int i = min(x, y); i <= max(x, y); i++)
+				for(int j = min(x_, y_); j <= max(x_, y_); j++)
+					fig[j][i] = tmp;
+		}
+		if(type == 'F'){
+			ss >> x >> y >> tmp;
+			char hold = fig[x][y];
 
-	return 0;
+			for(int i = 1; i <= m; i++){
+				for(int j = 1; j <= n; j++)
+					if(fig[i][j] == hold)
+						fig[i][j] = tmp;
+			}
+		}
+		if(type == 'S'){
+			ss >> name;
+
+			cout << name << '\n';
+
+			// cout << n << ' ' << m << '\n';
+
+			for(int i = 1; i <= m; i++){
+				for(int j = 1; j <= n; j++)
+					cout << fig[i][j];
+				cout << '\n';
+			}
+		}
+
+	}
 }
